@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="preload" as="image" href="images/packages/internal-external.jpg" fetchpriority="high">
-    <link rel="stylesheet" href="style.css?v=10">
+    <link rel="stylesheet" href="style.css?v=12">
 </head>
 <body>
 
@@ -40,7 +40,7 @@
     </div>
 
     <main>
-        <!-- Hero Section — Phase 2 Final -->
+        <!-- Hero Section -->
         <section id="hero" class="hero-section">
             <div class="hero-bg" aria-hidden="true"></div>
             <div class="container hero-content">
@@ -57,15 +57,23 @@
             </div>
         </section>
 
-        <!-- المربع المتحرك -->
+        <!-- الشاشة المتحركة -->
         <section class="animated-message-section">
             <div class="container">
                 <div class="animated-message-box">
                     <div class="message-slide active">
-                        <span>٥ غسلات والسادسة مجانًا — غسلات محسوبة وحقك مضمون</span>
+                        <div class="message-content">
+                            <div class="message-icon">🎁</div>
+                            <p class="message-text"> غسلات والسادسة مجانًا</p>
+                            <p class="message-subtext">غسلات محسوبة وحقك مضمون</p>
+                        </div>
                     </div>
                     <div class="message-slide">
-                        <span>تنسيق المواعيد والحجز عن طريق الواتساب</span>
+                        <div class="message-content">
+                            <div class="message-icon">📱</div>
+                            <p class="message-text">تنسيق المواعيد والحجز</p>
+                            <p class="message-subtext">عن طريق الواتساب مباشرة</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,7 +88,7 @@
                         <span>عرض دام عزك يا وطن</span>
                     </div>
                     <div class="national-day-image-wrapper">
-                        <img src="images/packages/national-offer.jpg" alt="عرض اليوم الوطني" class="national-day-image" loading="lazy" onerror="this.parentElement.style.display='none'">
+                        <img src="images/packages/national-offer.jpg" alt="عرض اليوم الوطني" class="national-day-image" loading="lazy">
                     </div>
                     <button onclick="openBooking('national-day')" class="btn btn-primary national-day-cta">احجز العرض</button>
                 </div>
@@ -171,7 +179,7 @@
             </div>
         </section>
 
-        <!-- Before/After -->
+        <!-- Before/After — الإصلاح النهائي -->
         <section id="before-after" class="section before-after-section">
             <div class="container">
                 <div class="section-header fade-in-up">
@@ -179,12 +187,18 @@
                     <h2 class="section-title">شوف الفرق بنفسك</h2>
                     <p class="section-description">صور حقيقية من خدماتنا</p>
                 </div>
+
                 <div class="before-after-slider fade-in-up">
                     <button class="ba-slider-btn ba-prev" onclick="prevBeforeAfter()" aria-label="السابق">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <polyline points="9 18 15 12 9 6"/>
+                        </svg>
                     </button>
+
                     <div class="ba-slider-viewport">
                         <div class="ba-slider-track" id="ba-slider-track">
+                            
+                            <!-- الزوج 1: Land Cruiser -->
                             <div class="ba-pair">
                                 <div class="before-after-wrapper" id="ba-wrapper-1">
                                     <div class="before-image-wrapper">
@@ -203,6 +217,8 @@
                                     <span class="ba-car-type">SUV</span>
                                 </div>
                             </div>
+
+                            <!-- الزوج 2: Hyundai Sonata -->
                             <div class="ba-pair">
                                 <div class="before-after-wrapper" id="ba-wrapper-2">
                                     <div class="before-image-wrapper">
@@ -221,6 +237,8 @@
                                     <span class="ba-car-type">سيدان</span>
                                 </div>
                             </div>
+
+                            <!-- الزوج 3: Nissan Navara -->
                             <div class="ba-pair">
                                 <div class="before-after-wrapper" id="ba-wrapper-3">
                                     <div class="before-image-wrapper">
@@ -239,17 +257,23 @@
                                     <span class="ba-car-type">بيك أب</span>
                                 </div>
                             </div>
+
                         </div>
                     </div>
+
                     <button class="ba-slider-btn ba-next" onclick="nextBeforeAfter()" aria-label="التالي">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <polyline points="15 18 9 12 15 6"/>
+                        </svg>
                     </button>
                 </div>
+
                 <div class="ba-slider-dots" id="ba-slider-dots">
                     <span class="ba-dot active" data-index="0" onclick="goToBeforeAfter(0)"></span>
                     <span class="ba-dot" data-index="1" onclick="goToBeforeAfter(1)"></span>
                     <span class="ba-dot" data-index="2" onclick="goToBeforeAfter(2)"></span>
                 </div>
+
                 <div style="text-align: center; margin-top: 1.5rem;">
                     <button onclick="openLightbox()" class="btn btn-secondary view-full">عرض الصورة كاملة</button>
                 </div>
@@ -348,7 +372,7 @@
                         <div class="logo-text-fallback" style="display: none;">UNLIMITED SHINE</div>
                     </div>
                     <p>غسيل سيارات متنقل يوفر وقتك وجهدك</p>
-                    <p class="cr-number">🇸 السجل التجاري: 7049237196</p>
+                    <p class="cr-number">🇸🇦 السجل التجاري: 7049237196</p>
                 </div>
                 <div class="footer-designer">
                     <h3>تصميم وتطوير</h3>
@@ -493,6 +517,6 @@
         <div class="lightbox-content"><img src="" alt="" id="lightbox-img"></div>
     </div>
 
-    <script src="script.js?v=10"></script>
+    <script src="script.js?v=12"></script>
 </body>
 </html>
