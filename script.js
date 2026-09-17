@@ -1,5 +1,5 @@
 /**
- * UNLIMITED SHINE - Core Logic v12
+ * UNLIMITED SHINE - Core Logic v17
  * Vanilla JavaScript - No Frameworks
  */
 
@@ -238,7 +238,6 @@ let bookingState = {
 let cart = { items: [] };
 let currentPackageDetailsId = null;
 
-// حالة سلايدر الباقات
 let sliderState = {
     currentIndex: 0,
     totalSlides: 5,
@@ -246,7 +245,6 @@ let sliderState = {
     startX: 0
 };
 
-// حالة سلايدر Before/After
 let baSliderState = {
     currentIndex: 0,
     totalPairs: 3,
@@ -261,14 +259,14 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
     initHeaderScrollEffect();
     initNeighborhoods();
+    initFAQ();
     initBeforeAfterSlider();
     initPackageSlider();
     initAnimatedMessage();
     checkAndSwitchOffer();
     loadCartFromLocalStorage();
     updateCartUI();
-    
-    // إغلاق Modals عند الضغط على Escape
+
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeLightbox();
@@ -277,16 +275,14 @@ document.addEventListener('DOMContentLoaded', () => {
             closeCart();
         }
     });
-    
-    // إغلاق Lightbox عند الضغط خارجه
+
     const lightbox = document.getElementById('lightbox');
     if (lightbox) {
         lightbox.addEventListener('click', (e) => {
             if (e.target.id === 'lightbox') closeLightbox();
         });
     }
-    
-    // إغلاق Modals عند الضغط خارجها
+
     document.querySelectorAll('.modal').forEach(modal => {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
@@ -327,9 +323,9 @@ function initHeaderScrollEffect() {
 function initAnimatedMessage() {
     const messages = document.querySelectorAll('.message-slide');
     if (messages.length < 2) return;
-    
+
     let currentIndex = 0;
-    
+
     setInterval(() => {
         messages[currentIndex].classList.remove('active');
         currentIndex = (currentIndex + 1) % messages.length;
@@ -338,23 +334,25 @@ function initAnimatedMessage() {
 }
 
 // ==========================================
-// 10. التبديل التلقائي بين العروض
+// 10. التبديل التلقائي بين العروض + العداد الحي
 // ==========================================
 function checkAndSwitchOffer() {
     const now = new Date().getTime();
     const endDate = new Date(NATIONAL_OFFER_END_DATE).getTime();
-    
+
     const nationalOffer = document.getElementById('national-offer');
     const packagesOffer = document.getElementById('8-packages-offer');
-    
+
     if (now > endDate) {
         if (nationalOffer) nationalOffer.style.display = 'none';
         if (packagesOffer) packagesOffer.style.display = 'block';
         if (window.countdownInterval) clearInterval(window.countdownInterval);
+        updateCountdown(0);
     } else {
         if (nationalOffer) nationalOffer.style.display = 'block';
         if (packagesOffer) packagesOffer.style.display = 'none';
-        
+
+        updateCountdown(endDate - now);
         if (!window.countdownInterval) {
             window.countdownInterval = setInterval(() => {
                 const remaining = endDate - new Date().getTime();
@@ -364,8 +362,6 @@ function checkAndSwitchOffer() {
                     updateCountdown(remaining);
                 }
             }, 1000);
-        } else {
-            updateCountdown(endDate - new Date().getTime());
         }
     }
 }
@@ -373,12 +369,17 @@ function checkAndSwitchOffer() {
 function updateCountdown(remainingMs) {
     const el = document.getElementById('countdown-date');
     if (!el) return;
-    
-    const days = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
-    if (days > 0) {
-        el.textContent = `ينتهي خلال ${days} يوم (25 سبتمبر)`;
+
+    if (remainingMs <= 0) {
+        el.textContent = 'انتهى';
+        return;
+    }
+
+    const days = Math.ceil(remainingMs / 86400000);
+    if (days <= 1) {
+        el.textContent = 'آخر يوم';
     } else {
-        el.textContent = '25 سبتمبر';
+        el.textContent = 'تبقى ' + days + ' أيام';
     }
 }
 
@@ -389,45 +390,45 @@ function initPackageSlider() {
     const track = document.getElementById('slider-track');
     const viewport = document.querySelector('.slider-viewport');
     if (!track || !viewport) return;
-    
+
     viewport.addEventListener('touchstart', (e) => {
         sliderState.isDragging = true;
         sliderState.startX = e.touches[0].clientX;
     }, { passive: true });
-    
+
     viewport.addEventListener('touchend', (e) => {
         if (!sliderState.isDragging) return;
         sliderState.isDragging = false;
         const endX = e.changedTouches[0].clientX;
         const diff = sliderState.startX - endX;
-        
+
         if (diff > 50) {
             nextPackageSlide();
         } else if (diff < -50) {
             prevPackageSlide();
         }
     });
-    
+
     viewport.addEventListener('mousedown', (e) => {
         sliderState.isDragging = true;
         sliderState.startX = e.clientX;
         viewport.style.cursor = 'grabbing';
     });
-    
+
     window.addEventListener('mouseup', (e) => {
         if (!sliderState.isDragging) return;
         sliderState.isDragging = false;
         viewport.style.cursor = '';
         const endX = e.clientX;
         const diff = sliderState.startX - endX;
-        
+
         if (diff > 50) {
             nextPackageSlide();
         } else if (diff < -50) {
             prevPackageSlide();
         }
     });
-    
+
     updateSliderPosition();
 }
 
@@ -455,108 +456,139 @@ function goToPackageSlide(index) {
 function updateSliderPosition() {
     const track = document.getElementById('slider-track');
     if (!track) return;
-    
+
     const slide = track.querySelector('.package-slide');
     if (!slide) return;
-    
+
     const slideWidth = slide.offsetWidth;
     const gap = 12;
     const offset = sliderState.currentIndex * (slideWidth + gap);
-    
+
     track.style.transform = `translateX(${offset}px)`;
-    
+
     document.querySelectorAll('.slider-dots .dot').forEach((dot, i) => {
         dot.classList.toggle('active', i === sliderState.currentIndex);
     });
 }
 
 // ==========================================
-// 12. Before/After Slider — الإصلاح النهائي
+// 12. Before/After Slider - حل بكسل مستقل عن الاتجاه
 // ==========================================
 function initBeforeAfterSlider() {
-    // 1. تهيئة السحب الداخلي لكل زوج (المقارنة قبل/بعد)
     for (let i = 1; i <= 3; i++) {
         initSingleBeforeAfter(i);
     }
-    
-    // 2. تهيئة سلايدر التنقل الخارجي بين الأزواج
+
     const viewport = document.querySelector('.ba-slider-viewport');
     if (!viewport) return;
-    
+
     viewport.addEventListener('touchstart', (e) => {
         baSliderState.isDragging = true;
         baSliderState.startX = e.touches[0].clientX;
     }, { passive: true });
-    
+
     viewport.addEventListener('touchend', (e) => {
         if (!baSliderState.isDragging) return;
         baSliderState.isDragging = false;
         const diff = baSliderState.startX - e.changedTouches[0].clientX;
-        if (diff > 50) nextBeforeAfter();
-        else if (diff < -50) prevBeforeAfter();
+        if (diff > 40) nextBeforeAfter();
+        else if (diff < -40) prevBeforeAfter();
     }, { passive: true });
-    
+
     viewport.addEventListener('mousedown', (e) => {
         baSliderState.isDragging = true;
         baSliderState.startX = e.clientX;
         viewport.style.cursor = 'grabbing';
     });
-    
+
     window.addEventListener('mouseup', (e) => {
         if (!baSliderState.isDragging) return;
         baSliderState.isDragging = false;
         viewport.style.cursor = '';
         const diff = baSliderState.startX - e.clientX;
-        if (diff > 50) nextBeforeAfter();
-        else if (diff < -50) prevBeforeAfter();
+        if (diff > 40) nextBeforeAfter();
+        else if (diff < -40) prevBeforeAfter();
     });
-    
-    // تهيئة الموضع الأولي
+
+    window.addEventListener('resize', () => {
+        updateBeforeAfterPosition();
+    });
+
     updateBeforeAfterPosition();
 }
 
 function initSingleBeforeAfter(index) {
     const wrapper = document.getElementById(`ba-wrapper-${index}`);
-    const beforeWrapper = wrapper?.querySelector('.before-image-wrapper');
+    const beforeWrapper = wrapper ? wrapper.querySelector('.before-image-wrapper') : null;
     const handle = document.getElementById(`ba-handle-${index}`);
-    
+
     if (!wrapper || !beforeWrapper || !handle) return;
-    
-    let isDragging = false;
-    
-    const updateSlider = (x) => {
+
+    let dragging = false;
+    let axis = null;
+    let startX = 0;
+    let startY = 0;
+
+    const setPos = (x) => {
         const rect = wrapper.getBoundingClientRect();
         let pos = ((x - rect.left) / rect.width) * 100;
         pos = Math.max(0, Math.min(100, pos));
-        
         beforeWrapper.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
         handle.style.left = `${pos}%`;
     };
-    
-    // منع تعارض السحب الداخلي مع الخارجي
-    const startDrag = (e) => { 
-        isDragging = true; 
-        updateSlider(e.type.includes('touch') ? e.touches[0].clientX : e.clientX); 
-        e.stopPropagation(); 
-        e.preventDefault();
-    };
-    
-    const moveDrag = (e) => { 
-        if (!isDragging) return; 
-        updateSlider(e.type.includes('touch') ? e.touches[0].clientX : e.clientX); 
-        e.stopPropagation();
-        e.preventDefault();
-    };
-    
-    const endDrag = () => { isDragging = false; };
 
-    wrapper.addEventListener('mousedown', startDrag);
-    window.addEventListener('mousemove', moveDrag);
-    window.addEventListener('mouseup', endDrag);
-    
-    wrapper.addEventListener('touchstart', startDrag, { passive: false });
-    wrapper.addEventListener('touchmove', moveDrag, { passive: false });
-    wrapper.addEventListener('touchend', endDrag);
+    // Mouse: مقارنة في أي مكان داخل الصورة
+    wrapper.addEventListener('mousedown', (e) => {
+        dragging = true;
+        axis = 'x';
+        setPos(e.clientX);
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (dragging) setPos(e.clientX);
+    });
+
+    window.addEventListener('mouseup', () => {
+        dragging = false;
+        axis = null;
+    });
+
+    // Touch: قفل المحور - أفقي = مقارنة، عمودي = تمرير الصفحة
+    wrapper.addEventListener('touchstart', (e) => {
+        dragging = true;
+        axis = null;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        e.stopPropagation();
+    }, { passive: true });
+
+    wrapper.addEventListener('touchmove', (e) => {
+        if (!dragging) return;
+        const x = e.touches[0].clientX;
+        const y = e.touches[0].clientY;
+
+        if (axis === null) {
+            if (Math.abs(x - startX) > 8 || Math.abs(y - startY) > 8) {
+                axis = Math.abs(x - startX) > Math.abs(y - startY) ? 'x' : 'y';
+            } else {
+                return;
+            }
+        }
+
+        if (axis === 'x') {
+            setPos(x);
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    }, { passive: false });
+
+    wrapper.addEventListener('touchend', (e) => {
+        dragging = false;
+        axis = null;
+        e.stopPropagation();
+    });
 }
 
 function nextBeforeAfter() {
@@ -583,13 +615,19 @@ function goToBeforeAfter(index) {
 function updateBeforeAfterPosition() {
     const track = document.getElementById('ba-slider-track');
     if (!track) return;
-    
-    // الإصلاح الجذري:
-    // في RTL، للتحرك نحو العناصر التالية (Sonata, Navara)
-    // يجب تحريك الـtrack لليسار بقيمة سالبة
-    const offset = baSliderState.currentIndex * 33.333;
-    track.style.transform = `translateX(-${offset}%)`;
-    
+
+    const pairs = track.querySelectorAll('.ba-pair');
+    if (pairs.length === 0) return;
+
+    let shift = 0;
+    if (pairs.length > 1) {
+        // المسافة بين زوجين متتاليين (سالبة في RTL) - مستقل عن الاتجاه الحالي
+        const step = pairs[1].getBoundingClientRect().left - pairs[0].getBoundingClientRect().left;
+        shift = -baSliderState.currentIndex * step;
+    }
+
+    track.style.transform = `translateX(${shift}px)`;
+
     document.querySelectorAll('.ba-slider-dots .ba-dot').forEach((dot, i) => {
         dot.classList.toggle('active', i === baSliderState.currentIndex);
     });
@@ -616,26 +654,52 @@ function closeLightbox() {
 }
 
 // ==========================================
-// 13. Modal تفاصيل الباقة
+// 13. الأسئلة الشائعة - Accordion
+// ==========================================
+function initFAQ() {
+    const container = document.getElementById('faq-container');
+    if (!container) return;
+
+    container.innerHTML = FAQ_DATA.map((item) => `
+        <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false" onclick="toggleFAQ(this)">
+                <span>${item.q}</span>
+                <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><p>${item.a}</p></div>
+        </div>
+    `).join('');
+}
+
+function toggleFAQ(btn) {
+    const item = btn.closest('.faq-item');
+    if (!item) return;
+    const isOpen = item.classList.contains('active');
+    item.classList.toggle('active', !isOpen);
+    btn.setAttribute('aria-expanded', String(!isOpen));
+}
+
+// ==========================================
+// 14. Modal تفاصيل الباقة
 // ==========================================
 function openPackageDetails(packageId) {
     const pkg = PACKAGES_DATA[packageId];
     if (!pkg) return;
-    
+
     currentPackageDetailsId = packageId;
-    
+
     const img = document.getElementById('pd-image');
     if (img) {
         img.src = pkg.image;
         img.alt = pkg.name;
     }
-    
+
     const title = document.getElementById('pd-title');
     if (title) title.textContent = pkg.name;
-    
+
     const currentPrice = document.getElementById('pd-current-price');
     if (currentPrice) currentPrice.textContent = `${pkg.currentPrice} ريال`;
-    
+
     const oldPrice = document.getElementById('pd-old-price');
     if (oldPrice) {
         if (pkg.oldPrice) {
@@ -645,7 +709,7 @@ function openPackageDetails(packageId) {
             oldPrice.style.display = 'none';
         }
     }
-    
+
     const validitySection = document.getElementById('pd-validity');
     if (validitySection && pkg.validity) {
         validitySection.style.display = 'flex';
@@ -654,13 +718,13 @@ function openPackageDetails(packageId) {
     } else if (validitySection) {
         validitySection.style.display = 'none';
     }
-    
+
     const desc = document.getElementById('pd-description');
     if (desc) desc.textContent = pkg.description;
-    
+
     fillList('pd-features-section', 'pd-features', pkg.features);
     fillList('pd-notes-section', 'pd-notes', pkg.notes);
-    
+
     document.getElementById('package-details-modal').classList.add('active');
     document.body.style.overflow = 'hidden';
 }
@@ -668,9 +732,9 @@ function openPackageDetails(packageId) {
 function fillList(sectionId, listId, items) {
     const section = document.getElementById(sectionId);
     const list = document.getElementById(listId);
-    
+
     if (!section || !list) return;
-    
+
     if (items && items.length > 0) {
         section.style.display = 'block';
         list.innerHTML = items.map(item => `<li>${item}</li>`).join('');
@@ -688,14 +752,15 @@ function closePackageDetails() {
 
 function bookThisPackage() {
     if (!currentPackageDetailsId) return;
+    const id = currentPackageDetailsId;
     closePackageDetails();
     setTimeout(() => {
-        openBooking(currentPackageDetailsId);
+        openBooking(id);
     }, 300);
 }
 
 // ==========================================
-// 14. السلة
+// 15. السلة
 // ==========================================
 function loadCartFromLocalStorage() {
     try {
@@ -724,7 +789,7 @@ function updateCartUI() {
         countEl.textContent = count;
         countEl.style.display = count > 0 ? 'flex' : 'none';
     }
-    
+
     renderCartItems();
 }
 
@@ -732,19 +797,19 @@ function renderCartItems() {
     const container = document.getElementById('cart-items');
     const emptyMsg = document.getElementById('cart-empty');
     const totalSection = document.getElementById('cart-total-section');
-    
+
     if (!container) return;
-    
+
     if (cart.items.length === 0) {
         if (emptyMsg) emptyMsg.style.display = 'block';
         if (totalSection) totalSection.style.display = 'none';
         container.innerHTML = '';
         return;
     }
-    
+
     if (emptyMsg) emptyMsg.style.display = 'none';
     if (totalSection) totalSection.style.display = 'flex';
-    
+
     container.innerHTML = cart.items.map((item, index) => `
         <div class="cart-item">
             <div class="cart-item-header">
@@ -766,7 +831,7 @@ function renderCartItems() {
             <div class="cart-item-price">${item.totalPrice} ريال</div>
         </div>
     `).join('');
-    
+
     const totalEl = document.getElementById('cart-total-price');
     if (totalEl) {
         const total = cart.items.reduce((sum, item) => sum + item.totalPrice, 0);
@@ -804,10 +869,10 @@ function proceedToBooking() {
         alert('السلة فارغة');
         return;
     }
-    
+
     let message = `طلب حجز جديد من السلة – UNLIMITED SHINE\n\n`;
     let grandTotal = 0;
-    
+
     cart.items.forEach((item, index) => {
         message += `العنصر ${index + 1}:\n`;
         message += `الباقة: ${item.packageName}\n`;
@@ -824,12 +889,12 @@ function proceedToBooking() {
         message += `السعر: ${item.totalPrice} ريال\n\n`;
         grandTotal += item.totalPrice;
     });
-    
+
     message += `الإجمالي النهائي: ${grandTotal} ريال`;
-    
+
     const encodedMessage = encodeURIComponent(message);
     window.open(`${PROJECT_DATA.whatsappLink}?text=${encodedMessage}`, '_blank');
-    
+
     cart.items = [];
     saveCartToLocalStorage();
     updateCartUI();
@@ -837,12 +902,49 @@ function proceedToBooking() {
 }
 
 // ==========================================
-// 15. نظام الحجز
+// 16. إضافة مباشرة للسلة من البطاقة
+// ==========================================
+function quickAddToCart(packageId) {
+    const pkg = PACKAGES_DATA[packageId];
+    if (!pkg) return;
+
+    const newItem = {
+        id: Date.now().toString(),
+        packageId: pkg.id,
+        packageName: pkg.name,
+        carSize: 'small',
+        carSizeName: CAR_SIZES[0].name,
+        carSizeDiff: 0,
+        neighborhood: 'يُؤكد عبر الواتساب',
+        period: '',
+        addons: [],
+        addonsPrice: 0,
+        totalWashes: pkg.totalWashes || 1,
+        totalPrice: pkg.currentPrice
+    };
+
+    cart.items.push(newItem);
+    saveCartToLocalStorage();
+    updateCartUI();
+    showToast('تمت الإضافة إلى السلة ✓');
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(window.toastTimer);
+    window.toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ==========================================
+// 17. نظام الحجز
 // ==========================================
 function getValidSteps() {
     const pkg = PACKAGES_DATA[bookingState.packageId];
     if (!pkg) return [1, 2, 3, 4, 5, 6];
-    
+
     if (!pkg.hasPeriod && !pkg.hasAddons) {
         return [1, 2, 3, 6];
     }
@@ -885,7 +987,7 @@ function openBooking(packageId, preselected = {}) {
 
     document.querySelectorAll('.booking-step').forEach(s => s.classList.remove('active'));
     document.querySelector('.booking-step[data-step="1"]').classList.add('active');
-    
+
     const serviceOptions = document.querySelector('.service-options');
     if (serviceOptions) {
         serviceOptions.innerHTML = `
@@ -903,7 +1005,7 @@ function openBooking(packageId, preselected = {}) {
     const periodStepperLine = document.getElementById('period-stepper-line');
     const addonsStepperLine = document.getElementById('addons-stepper-line');
     const summaryPeriodRow = document.getElementById('summary-period-row');
-    
+
     if (pkg.hasPeriod === false) {
         if (periodStep) periodStep.style.display = 'none';
         if (periodStepperItem) periodStepperItem.style.display = 'none';
@@ -915,7 +1017,7 @@ function openBooking(packageId, preselected = {}) {
         if (periodStepperLine) periodStepperLine.style.display = 'block';
         if (summaryPeriodRow) summaryPeriodRow.style.display = 'flex';
     }
-    
+
     if (pkg.hasAddons === false) {
         if (addonsStep) addonsStep.style.display = 'none';
         if (addonsStepperItem) addonsStepperItem.style.display = 'none';
@@ -944,16 +1046,16 @@ function closeBooking() {
 function selectCarSize(el) {
     document.querySelectorAll('.size-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
-    
+
     const sizeId = el.dataset.size;
     const sizeData = CAR_SIZES.find(s => s.id === sizeId);
-    
+
     if (sizeData) {
         bookingState.carSize = sizeData.id;
         bookingState.carSizeName = sizeData.name;
         bookingState.carSizeDiff = sizeData.priceDiff;
     }
-    
+
     updateBookingPrice();
     setTimeout(() => nextStep(), 300);
 }
@@ -961,7 +1063,7 @@ function selectCarSize(el) {
 function selectNeighborhood(el) {
     document.querySelectorAll('.neighborhood-item').forEach(i => i.classList.remove('selected'));
     el.classList.add('selected');
-    
+
     bookingState.neighborhood = el.dataset.name;
     localStorage.setItem('last_neighborhood', bookingState.neighborhood);
     setTimeout(() => nextStep(), 300);
@@ -970,7 +1072,7 @@ function selectNeighborhood(el) {
 function selectPeriod(el) {
     document.querySelectorAll('.period-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
-    
+
     bookingState.period = el.dataset.period;
     bookingState.periodName = el.querySelector('.period-title').textContent;
     setTimeout(() => nextStep(), 300);
@@ -993,7 +1095,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     const noneCb = document.querySelector('input[value="none"]');
                     if (noneCb) noneCb.checked = false;
-                    
+
                     bookingState.addons = bookingState.addons.filter(a => a.name !== 'بدون تكييس');
                     if (!bookingState.addons.find(a => a.name === name)) {
                         bookingState.addons.push({ name, price });
@@ -1002,7 +1104,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 bookingState.addons = bookingState.addons.filter(a => a.name !== name);
             }
-            
+
             updateBookingPrice();
         });
     });
@@ -1010,13 +1112,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function updateBookingPrice() {
     bookingState.addonsPrice = bookingState.addons.reduce((sum, a) => sum + a.price, 0);
-    
+
     if (bookingState.isMultiWash) {
         bookingState.totalPrice = bookingState.basePrice + (bookingState.carSizeDiff * bookingState.totalWashes) + bookingState.addonsPrice;
     } else {
         bookingState.totalPrice = bookingState.basePrice + bookingState.carSizeDiff + bookingState.addonsPrice;
     }
-    
+
     updateBookingSummary();
 }
 
@@ -1025,7 +1127,7 @@ function updateBookingSummary() {
     document.getElementById('summary-car-size').textContent = bookingState.carSizeName || '-';
     document.getElementById('summary-neighborhood').textContent = bookingState.neighborhood || '-';
     document.getElementById('summary-period').textContent = bookingState.periodName || '-';
-    document.getElementById('summary-addons').textContent = bookingState.addons.length > 0 
+    document.getElementById('summary-addons').textContent = bookingState.addons.length > 0
         ? bookingState.addons.map(a => a.name).join('، ')
         : 'لا يوجد';
     document.getElementById('summary-total-price').textContent = `${bookingState.totalPrice} ريال`;
@@ -1039,18 +1141,18 @@ function nextStep() {
 
     const validSteps = getValidSteps();
     const currentIndex = validSteps.indexOf(bookingState.step);
-    
+
     if (currentIndex < validSteps.length - 1) {
         const nextStepNum = validSteps[currentIndex + 1];
-        
+
         document.querySelector(`.booking-step[data-step="${bookingState.step}"]`).classList.remove('active');
         bookingState.step = nextStepNum;
         document.querySelector(`.booking-step[data-step="${bookingState.step}"]`).classList.add('active');
-        
+
         if (bookingState.step === 6) {
             updateBookingSummary();
         }
-        
+
         updateStepper();
         updateNavigationButtons();
     }
@@ -1059,14 +1161,14 @@ function nextStep() {
 function prevStep() {
     const validSteps = getValidSteps();
     const currentIndex = validSteps.indexOf(bookingState.step);
-    
+
     if (currentIndex > 0) {
         const prevStepNum = validSteps[currentIndex - 1];
-        
+
         document.querySelector(`.booking-step[data-step="${bookingState.step}"]`).classList.remove('active');
         bookingState.step = prevStepNum;
         document.querySelector(`.booking-step[data-step="${bookingState.step}"]`).classList.add('active');
-        
+
         updateStepper();
         updateNavigationButtons();
     }
@@ -1075,10 +1177,10 @@ function prevStep() {
 function validateStep(step) {
     if (step === 2 && !bookingState.carSize) return false;
     if (step === 3 && !bookingState.neighborhood) return false;
-    
+
     const pkg = PACKAGES_DATA[bookingState.packageId];
     if (pkg && pkg.hasPeriod && step === 4 && !bookingState.period) return false;
-    
+
     return true;
 }
 
@@ -1087,7 +1189,7 @@ function updateStepper() {
     document.querySelectorAll('.stepper-item').forEach(item => {
         const s = parseInt(item.dataset.step);
         item.classList.remove('active', 'completed');
-        
+
         if (!validSteps.includes(s)) {
             item.style.display = 'none';
             const nextSibling = item.nextElementSibling;
@@ -1100,7 +1202,7 @@ function updateStepper() {
             if (line && line.classList.contains('stepper-line')) {
                 line.style.display = 'block';
             }
-            
+
             if (s === bookingState.step) {
                 item.classList.add('active');
             } else if (validSteps.indexOf(s) < validSteps.indexOf(bookingState.step)) {
@@ -1120,7 +1222,7 @@ function updateNavigationButtons() {
     if (prevBtn) {
         prevBtn.style.display = currentIndex === 0 ? 'none' : 'inline-flex';
     }
-    
+
     if (nextBtn) {
         if (isLastStep) {
             nextBtn.style.display = 'none';
@@ -1134,7 +1236,7 @@ function updateNavigationButtons() {
 
 function addToCartFromBooking() {
     if (!bookingState.packageId) return;
-    
+
     const newItem = {
         id: Date.now().toString(),
         packageId: bookingState.packageId,
@@ -1149,12 +1251,13 @@ function addToCartFromBooking() {
         totalWashes: bookingState.totalWashes,
         totalPrice: bookingState.totalPrice
     };
-    
+
     cart.items.push(newItem);
     saveCartToLocalStorage();
     updateCartUI();
     closeBooking();
-    
+    showToast('تمت الإضافة إلى السلة ✓');
+
     bookingState = {
         step: 1,
         packageId: null,
@@ -1174,20 +1277,13 @@ function addToCartFromBooking() {
     };
 }
 
-function confirmBooking() {
-    const message = document.getElementById('whatsapp-message').textContent;
-    const encodedMessage = encodeURIComponent(message);
-    window.open(`${PROJECT_DATA.whatsappLink}?text=${encodedMessage}`, '_blank');
-    closeBooking();
-}
-
 // ==========================================
-// 16. دوال مساعدة
+// 18. دوال مساعدة
 // ==========================================
 function initNeighborhoods() {
     const list = document.getElementById('neighborhood-list');
     if (!list) return;
-    
+
     list.innerHTML = NEIGHBORHOODS.map(n => `
         <div class="neighborhood-item" data-name="${n}" onclick="selectNeighborhood(this)" role="button" tabindex="0">${n}</div>
     `).join('');
@@ -1197,16 +1293,9 @@ function filterNeighborhoods() {
     const input = document.getElementById('neighborhood-search');
     if (!input) return;
     const searchTerm = input.value.toLowerCase().trim();
-    
+
     document.querySelectorAll('.neighborhood-item').forEach(item => {
         const name = item.dataset.name.toLowerCase();
         item.style.display = name.includes(searchTerm) ? 'block' : 'none';
     });
-}
-
-function scrollToBooking() {
-    const packagesSlider = document.getElementById('packages-slider');
-    if (packagesSlider) {
-        packagesSlider.scrollIntoView({ behavior: 'smooth' });
-    }
 }
