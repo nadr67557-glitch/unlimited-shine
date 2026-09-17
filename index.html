@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="preload" as="image" href="images/packages/internal-external.jpg" fetchpriority="high">
-    <link rel="stylesheet" href="style.css?v=16">
+    <link rel="stylesheet" href="style.css?v=17">
 </head>
 <body>
 
@@ -23,7 +23,7 @@
                 <ul class="nav-links">
                     <li><a href="#hero" class="nav-link active">الرئيسية</a></li>
                     <li><a href="#packages-slider" class="nav-link">الباقات</a></li>
-                    <li><a href="#before-after" class="nav-link">قبل وبعد</a></li>
+                    <li><a href="#evidence" class="nav-link">قبل وبعد</a></li>
                 </ul>
             </nav>
             <a href="https://wa.me/966549778759" class="btn btn-outline whatsapp-btn" target="_blank" rel="noopener noreferrer">
@@ -39,6 +39,14 @@
         <span class="cart-count" id="cart-count">0</span>
     </div>
 
+    <!-- زر واتساب عائم -->
+    <a href="https://wa.me/966549778759" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="تواصل عبر واتساب">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    </a>
+
+    <!-- Toast -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
     <main>
         <!-- Hero Section -->
         <section id="hero" class="hero-section">
@@ -48,31 +56,50 @@
                     <h1 class="hero-title">UNLIMITED <span class="text-gradient">SHINE</span></h1>
                     <p class="hero-subtitle">غسيل سيارات متنقل</p>
                     <p class="hero-description">نأتي إليك — في بيتك أو عملك.</p>
+
+                    <div class="hero-prices" aria-label="الأسعار">
+                        <button type="button" class="price-chip" onclick="openBooking('external')">
+                            <span class="price-chip-name">خارجي</span>
+                            <span class="price-chip-now">31 ريال</span>
+                            <span class="price-chip-old">بدل 45</span>
+                        </button>
+                        <button type="button" class="price-chip" onclick="openBooking('internal-external')">
+                            <span class="price-chip-name">داخلي + خارجي</span>
+                            <span class="price-chip-now">35 ريال</span>
+                            <span class="price-chip-old">بدل 50</span>
+                        </button>
+                        <button type="button" class="price-chip" onclick="openBooking('gift')">
+                            <span class="price-chip-name">غسلة هدية</span>
+                            <span class="price-chip-now">35 ريال</span>
+                            <span class="price-chip-old">بدل 50</span>
+                        </button>
+                    </div>
+
                     <div class="hero-actions">
                         <a href="#packages-slider" class="btn btn-primary hero-cta-primary">احجز غسيلك الآن</a>
-                        <a href="#before-after" class="btn btn-secondary hero-cta-secondary">شوف الفرق</a>
+                        <a href="#evidence" class="btn btn-secondary hero-cta-secondary">شوف الفرق</a>
                     </div>
-                    <p class="hero-trust">حجز سريع عبر واتساب — نصلك في موقعك</p>
+                    <p class="hero-trust">حجز سريع عبر واتساب — نصلك في موقعك داخل أحياء التغطية</p>
                 </div>
             </div>
         </section>
 
-        <!-- الشاشة المتحركة -->
+        <!-- الرسالة المتحركة - شريط مضغوط -->
         <section class="animated-message-section">
             <div class="container">
                 <div class="animated-message-box">
                     <div class="message-slide active">
                         <div class="message-content">
-                            <div class="message-icon">🎁</div>
-                            <p class="message-text"> غسلات والسادسة مجانًا</p>
-                            <p class="message-subtext">غسلات محسوبة وحقك مضمون</p>
+                            <span class="message-icon">🎁</span>
+                            <span class="message-text">٥ غسلات والسادسة مجانًا</span>
+                            <span class="message-subtext">غسلات محسوبة وحقك مضمون</span>
                         </div>
                     </div>
                     <div class="message-slide">
                         <div class="message-content">
-                            <div class="message-icon">📱</div>
-                            <p class="message-text">تنسيق المواعيد والحجز</p>
-                            <p class="message-subtext">عن طريق الواتساب مباشرة</p>
+                            <span class="message-icon">📱</span>
+                            <span class="message-text">تنسيق المواعيد والحجز</span>
+                            <span class="message-subtext">عن طريق الواتساب مباشرة</span>
                         </div>
                     </div>
                 </div>
@@ -85,12 +112,13 @@
                 <div class="national-day-card fade-in-up">
                     <div class="national-day-badge">
                         <span class="flag-icon">🇸🇦</span>
-                        <span>عرض دام عزك يا وطن</span>
+                        <span>عرض اليوم الوطني</span>
                     </div>
                     <div class="national-day-image-wrapper">
-                        <img src="images/packages/national-offer.jpg" alt="عرض اليوم الوطني" class="national-day-image" loading="lazy">
+                        <img src="images/packages/national-offer.jpg" alt="عرض اليوم الوطني - 4 غسلات بـ96 ريال" class="national-day-image" loading="lazy">
                     </div>
-                    <button onclick="openBooking('national-day')" class="btn btn-primary national-day-cta">احجز العرض</button>
+                    <div class="national-countdown">⏳ <span id="countdown-date"></span></div>
+                    <button onclick="openBooking('national-day')" class="btn btn-primary national-day-cta">احجز العرض ←</button>
                 </div>
             </div>
         </section>
@@ -128,7 +156,11 @@
                                     <img src="images/packages/internal-external.jpg" alt="غسيل داخلي وخارجي" class="slide-image" loading="lazy">
                                 </div>
                                 <div class="slide-content">
-                                    <button onclick="openPackageDetails('internal-external')" class="btn btn-secondary slide-details-btn">عرض التفاصيل</button>
+                                    <div class="slide-rating">⭐ 5 (7)</div>
+                                    <div class="slide-buttons">
+                                        <button onclick="quickAddToCart('internal-external')" class="btn btn-primary slide-add-btn">أضف للسلة</button>
+                                        <button onclick="openPackageDetails('internal-external')" class="btn btn-secondary slide-details-btn">عرض التفاصيل</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="package-slide" data-package="gift">
@@ -136,7 +168,10 @@
                                     <img src="images/packages/gift.jpg" alt="غسيل هدية" class="slide-image" loading="lazy">
                                 </div>
                                 <div class="slide-content">
-                                    <button onclick="openPackageDetails('gift')" class="btn btn-secondary slide-details-btn">عرض التفاصيل</button>
+                                    <div class="slide-buttons">
+                                        <button onclick="quickAddToCart('gift')" class="btn btn-primary slide-add-btn">أضف للسلة</button>
+                                        <button onclick="openPackageDetails('gift')" class="btn btn-secondary slide-details-btn">عرض التفاصيل</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="package-slide" data-package="external">
@@ -144,7 +179,10 @@
                                     <img src="images/packages/external.jpg" alt="غسيل خارجي" class="slide-image" loading="lazy">
                                 </div>
                                 <div class="slide-content">
-                                    <button onclick="openPackageDetails('external')" class="btn btn-secondary slide-details-btn">عرض التفاصيل</button>
+                                    <div class="slide-buttons">
+                                        <button onclick="quickAddToCart('external')" class="btn btn-primary slide-add-btn">أضف للسلة</button>
+                                        <button onclick="openPackageDetails('external')" class="btn btn-secondary slide-details-btn">عرض التفاصيل</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="package-slide" data-package="4washes">
@@ -152,7 +190,11 @@
                                     <img src="images/packages/4washes.jpg" alt="باقة 4 غسلات" class="slide-image" loading="lazy">
                                 </div>
                                 <div class="slide-content">
-                                    <button onclick="openPackageDetails('4washes')" class="btn btn-secondary slide-details-btn">عرض التفاصيل</button>
+                                    <div class="slide-rating">⭐ 5 (1)</div>
+                                    <div class="slide-buttons">
+                                        <button onclick="quickAddToCart('4washes')" class="btn btn-primary slide-add-btn">أضف للسلة</button>
+                                        <button onclick="openPackageDetails('4washes')" class="btn btn-secondary slide-details-btn">عرض التفاصيل</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="package-slide" data-package="8washes">
@@ -160,7 +202,10 @@
                                     <img src="images/packages/8washes.jpg" alt="باقة 8 غسلات" class="slide-image" loading="lazy">
                                 </div>
                                 <div class="slide-content">
-                                    <button onclick="openPackageDetails('8washes')" class="btn btn-secondary slide-details-btn">عرض التفاصيل</button>
+                                    <div class="slide-buttons">
+                                        <button onclick="quickAddToCart('8washes')" class="btn btn-primary slide-add-btn">أضف للسلة</button>
+                                        <button onclick="openPackageDetails('8washes')" class="btn btn-secondary slide-details-btn">عرض التفاصيل</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -179,8 +224,8 @@
             </div>
         </section>
 
-        <!-- Before/After — الإصلاح النهائي -->
-        <section id="before-after" class="section before-after-section">
+        <!-- Before/After -->
+        <section id="evidence" class="section before-after-section">
             <div class="container">
                 <div class="section-header fade-in-up">
                     <span class="section-label">الدليل البصري</span>
@@ -197,8 +242,6 @@
 
                     <div class="ba-slider-viewport">
                         <div class="ba-slider-track" id="ba-slider-track">
-                            
-                            <!-- الزوج 1: Land Cruiser -->
                             <div class="ba-pair">
                                 <div class="before-after-wrapper" id="ba-wrapper-1">
                                     <div class="before-image-wrapper">
@@ -218,7 +261,6 @@
                                 </div>
                             </div>
 
-                            <!-- الزوج 2: Hyundai Sonata -->
                             <div class="ba-pair">
                                 <div class="before-after-wrapper" id="ba-wrapper-2">
                                     <div class="before-image-wrapper">
@@ -238,7 +280,6 @@
                                 </div>
                             </div>
 
-                            <!-- الزوج 3: Nissan Navara -->
                             <div class="ba-pair">
                                 <div class="before-after-wrapper" id="ba-wrapper-3">
                                     <div class="before-image-wrapper">
@@ -257,7 +298,6 @@
                                     <span class="ba-car-type">بيك أب</span>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
@@ -295,7 +335,7 @@
                         <span class="addon-price">+5 ريال</span>
                     </div>
                     <div class="addon-card fade-in-up">
-                        <div class="addon-icon-placeholder">️</div>
+                        <div class="addon-icon-placeholder">🎛️</div>
                         <h4 class="addon-title">تكييس عصا القير والمساحات والدركسون</h4>
                         <span class="addon-price">+5 ريال</span>
                     </div>
@@ -316,19 +356,19 @@
                     <h2 class="section-title">ماذا يقول عملاؤنا</h2>
                 </div>
                 <div class="reviews-grid">
-                    <div class="review-card fade-in-up">
+                    <div class="review-card">
                         <div class="review-content">
                             <p>"ماشاء الله الشغل طيب، بيض الله وجهك ماقصرتو"</p>
                         </div>
                         <div class="reviewer"><span class="reviewer-name">عميل</span></div>
                     </div>
-                    <div class="review-card fade-in-up">
+                    <div class="review-card">
                         <div class="review-content">
                             <p>"الله يعطيكم العافية شغل ممتاز وماحصلت ورا العامل ايخطاء استمرو على الجودة هذي"</p>
                         </div>
                         <div class="reviewer"><span class="reviewer-name">عميل</span></div>
                     </div>
-                    <div class="review-card fade-in-up">
+                    <div class="review-card">
                         <div class="review-content">
                             <p>"ما شاء الله معاملتك طيبه وفعاله"</p>
                         </div>
@@ -380,17 +420,6 @@
                     <p class="designer-name">خالد الجراش</p>
                     <a href="tel:779184839" class="designer-phone">779184839</a>
                     <p class="designer-title">مصمم مواقع وحلول رقمية</p>
-                </div>
-                <div class="footer-payment">
-                    <h3>وسائل الدفع</h3>
-                    <div class="payment-methods">
-                        <div class="payment-placeholder">مدى</div>
-                        <div class="payment-placeholder">Visa</div>
-                        <div class="payment-placeholder">Mastercard</div>
-                        <div class="payment-placeholder">Apple Pay</div>
-                        <div class="payment-placeholder">STC Bank</div>
-                        <div class="payment-placeholder">تحويل بنكي</div>
-                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -463,7 +492,7 @@
                 <div class="booking-step" data-step="2">
                     <h3>حدد حجم سيارتك</h3>
                     <div class="car-size-options">
-                        <div class="size-card" data-size="small" data-diff="0" onclick="selectCarSize(this)"><div class="size-icon"></div><div class="size-title">صغيرة — سيدان</div></div>
+                        <div class="size-card" data-size="small" data-diff="0" onclick="selectCarSize(this)"><div class="size-icon">🚗</div><div class="size-title">صغيرة — سيدان</div></div>
                         <div class="size-card" data-size="medium" data-diff="20" onclick="selectCarSize(this)"><div class="size-icon">🚐</div><div class="size-title">وسط — جيب 5 مقاعد</div><div class="size-price">+20 ريال</div></div>
                         <div class="size-card" data-size="large" data-diff="40" onclick="selectCarSize(this)"><div class="size-icon">🚙</div><div class="size-title">كبيرة — جيب 7 مقاعد</div><div class="size-price">+40 ريال</div></div>
                     </div>
@@ -479,15 +508,15 @@
                     <div class="period-options">
                         <div class="period-card" data-period="morning" onclick="selectPeriod(this)"><div class="period-icon">🌅</div><div class="period-title">صباحًا</div></div>
                         <div class="period-card" data-period="noon" onclick="selectPeriod(this)"><div class="period-icon">☀️</div><div class="period-title">ظهرًا</div></div>
-                        <div class="period-card" data-period="evening" onclick="selectPeriod(this)"><div class="period-icon"></div><div class="period-title">مساءً</div></div>
+                        <div class="period-card" data-period="evening" onclick="selectPeriod(this)"><div class="period-icon">🌙</div><div class="period-title">مساءً</div></div>
                     </div>
                 </div>
                 <div class="booking-step" data-step="5" id="addons-step">
                     <h3>الإضافات الاختيارية</h3>
                     <div class="booking-addons">
-                        <label class="addon-option"><input type="checkbox" name="addon" value="front-mats" data-price="5" onchange="updateBookingPrice()"><span class="addon-name">تكييس دعاسات أمامية</span><span class="addon-price">5 ريال</span></label>
-                        <label class="addon-option"><input type="checkbox" name="addon" value="gear-stick" data-price="5" onchange="updateBookingPrice()"><span class="addon-name">تكييس عصا القير وعصا المساحات والدركسون</span><span class="addon-price">5 ريال</span></label>
-                        <label class="addon-option"><input type="checkbox" name="addon" value="none" data-price="0" onchange="updateBookingPrice()"><span class="addon-name">بدون تكييس</span><span class="addon-price">0 ريال</span></label>
+                        <label class="addon-option"><input type="checkbox" name="addon" value="front-mats" data-price="5"><span class="addon-name">تكييس دعاسات أمامية</span><span class="addon-price">5 ريال</span></label>
+                        <label class="addon-option"><input type="checkbox" name="addon" value="gear-stick" data-price="5"><span class="addon-name">تكييس عصا القير وعصا المساحات والدركسون</span><span class="addon-price">5 ريال</span></label>
+                        <label class="addon-option"><input type="checkbox" name="addon" value="none" data-price="0"><span class="addon-name">بدون تكييس</span><span class="addon-price">0 ريال</span></label>
                     </div>
                 </div>
                 <div class="booking-step" data-step="6" id="confirm-step">
@@ -517,6 +546,6 @@
         <div class="lightbox-content"><img src="" alt="" id="lightbox-img"></div>
     </div>
 
-    <script src="script.js?v=12"></script>
+    <script src="script.js?v=17"></script>
 </body>
 </html>
