@@ -1,5 +1,5 @@
 /**
- * UNLIMITED SHINE - Core Logic
+ * UNLIMITED SHINE - Core Logic v7
  * Vanilla JavaScript - No Frameworks
  */
 
@@ -13,6 +13,11 @@ const PROJECT_DATA = {
     crNumber: "7049237196"
 };
 
+const NATIONAL_OFFER_END_DATE = '2026-09-25T23:59:59';
+
+// ==========================================
+// 2. قائمة الأحياء (48 حي)
+// ==========================================
 const NEIGHBORHOODS = [
     'السلي', 'المنار', 'الربوة', 'الروابي', 'الجزيرة', 'الفيحاء', 'السعادة',
     'النسيم', 'الريان', 'النور', 'الصفا', 'القادسية', 'الشهداء', 'النسيم الغربي',
@@ -24,44 +29,276 @@ const NEIGHBORHOODS = [
     'صلاح الدين', 'الملك عبدالعزيز'
 ];
 
+// ==========================================
+// 3. بيانات الباقات الكاملة
+// ==========================================
+const PACKAGES_DATA = {
+    'internal-external': {
+        id: 'internal-external',
+        name: 'باقة غسيل سيارة داخلي وخارجي',
+        currentPrice: 35,
+        oldPrice: 50,
+        image: 'images/packages/internal-external.jpg',
+        rating: { stars: 5, count: 7, recommendation: '100% أوصوا بالمنتج' },
+        description: 'تجربة غسيل سيارة داخلي و خارجي مع unlimited shine تمنح سيارتك الرعاية التي تستحقها من الداخل والخارج، نحن نوفر لك خدمة متكاملة تضمن نظافة السيارة بالكامل، مما يعزز مظهرها وأناقتها ويجعلها تبدو وكأنها جديدة.',
+        features: [
+            'تنظيف خارجي متقن',
+            'حماية وتلميع',
+            'راحة في المكان والزمان',
+            'أدوات تنظيف احترافية',
+            'تنظيف داخلي مميز'
+        ],
+        notes: [],
+        hasCarSize: true,
+        hasPeriod: true,
+        hasAddons: true,
+        isMultiWash: false,
+        totalWashes: 1
+    },
+    'gift': {
+        id: 'gift',
+        name: 'باقة غسيل سيارة اهداء',
+        currentPrice: 35,
+        oldPrice: 50,
+        image: 'images/packages/gift.jpg',
+        tagline: 'خلها نظيفة - اهدي الغسلة لمن تحب',
+        description: 'لأننا في Unlimited Shine نؤمن إن الجودة ما تعني التعقيد، ونقدم لك راحة تامة مع أداء يفوق التوقعات.',
+        features: [
+            'نخدمك وين ما تكون - بدون مشاوير ولا انتظار.',
+            'فريق مدرب يهتم بأدق التفاصيل في تنظيف السيارة.',
+            'نستخدم مواد احترافية وآمنة 100%.',
+            'حجزوات سهلة، مواعيد مرنة، ودعم سريع.',
+            'نضمن لك تجربة تنظيف استثنائية في كل مرة.'
+        ],
+        notes: [
+            'إزالة الأغراض الشخصية.',
+            'الشركة غير مسؤولة عن المفقودات.',
+            'إعادة الجدولة/الإلغاء/الاسترداد قبل الموعد بساعة على الأقل.',
+            'تنظيف الشنطة والأدراج والسنادة فقط عند طلب العميل.',
+            'انتظار الكابتن 15 دقيقة.',
+            'إذا لم يتم الدفع أو إرسال الموقع قبل الموعد بـ30 دقيقة يتم إلغاء الموعد تلقائيًا.'
+        ],
+        hasCarSize: true,
+        hasPeriod: true,
+        hasAddons: true,
+        isMultiWash: false,
+        totalWashes: 1
+    },
+    'external': {
+        id: 'external',
+        name: 'غسيل سيارة خارجي فقط',
+        currentPrice: 31,
+        oldPrice: 45,
+        image: 'images/packages/external.jpg',
+        tagline: 'خلها نظيفة - غسيل خارجي فقط',
+        description: 'غسيل احترافي للهيكل الخارجي باستخدام الصابون ومناشف المايكروفايبر.',
+        features: [
+            'غسيل الهيكل الخارجي',
+            'استخدام صابون عالي الجودة',
+            'مناشف مايكروفايبر لحماية الطلاء'
+        ],
+        notes: [
+            'الأحياء المغطاة: شرق الرياض'
+        ],
+        hasCarSize: true,
+        hasPeriod: true,
+        hasAddons: true,
+        isMultiWash: false,
+        totalWashes: 1
+    },
+    '4washes': {
+        id: '4washes',
+        name: 'باقة غسيل سياره 4 غسلات ( المدة شهران )',
+        currentPrice: 132,
+        oldPrice: 200,
+        image: 'images/packages/4washes.jpg',
+        validity: 'شهران',
+        rating: { stars: 5, count: 1 },
+        description: 'مع عروض غسيل سيارات unlimited shine الجديد، سيارتك دائماً في أبهى صورة.',
+        features: [
+            '4 غسلات داخلية وخارجية متكاملة.',
+            'سعر الغسلة 33 ريال فقط.',
+            'تنظيف داخلي شامل: الأرضيات، الطبلون، المقاعد، الزجاج، وكل التفاصيل.',
+            'غسيل خارجي بأحتراف ومواد امنة.',
+            'خدمة متنقلة سريعة ومريحة في أي مكان يناسبك.',
+            'مثالية للعلات أو أصحاب المشاوير الكثيررة.'
+        ],
+        notes: [
+            'عند الاشتراك في الباقة، ما يححق للعميل إلغاء الاشتراك أو استرجاع المبلغ المدفوع.',
+            'يرجى إزالة أي أغراض شخصية من السيارة، والشركة غير مسؤولة عن أي مفقودات.',
+            'إذا بغيت تعيد جدولة الموعد، تلغيه، أو تسترجع المبلغ، لازم يكون قبل الموعد بساعة على الأقل، وإذا ما صار التغيير في الوقت المطلوب، ينخصم المبلغ كامل.',
+            'تنظيف الشنطة، الأدراج، أو السنادة يتم فقط إذا طلب العميل ذلك.',
+            'الكابتن ينتظر 15 دقيقة فقط، وإذا ما حضرت، يلغي الموعد وينخصم المبلغ كامل.',
+            'إذا حجزت الموعد وما دفعت أو ما أرسلت الموقع قبل الموعد بـ30 دقيقة، يلغي الموعد تلقائيًا.'
+        ],
+        hasCarSize: true,
+        hasPeriod: false,
+        hasAddons: false,
+        isMultiWash: true,
+        totalWashes: 4
+    },
+    '8washes': {
+        id: '8washes',
+        name: 'عرض 8 غسلات',
+        currentPrice: 245,
+        oldPrice: 400,
+        image: 'images/packages/8washes.jpg',
+        validity: '4 أشهر',
+        description: 'مع عروض غسيل سيارات unlimited shine الجديد، سيارتك دائمًا في أبهى صورة، احصل على 8 غسلات شاملة (داخلي وخارجي) بسعر 280 ريال فقط، يعني الغسلة الواحدة بـ 35 ريال فقط، ووفر وقتك وجهدك واهتم بسيارتك في نفس الوقت،',
+        features: [
+            '4 غسلات داخلية وخارجية متكاملة',
+            'صلاحية الاستخدام مفتوح ما يعني مرونة في المواعيد',
+            'سعر الغسلة 35 ريال فقط، قيمة عالية بسعر منخفض',
+            'تنظيف داخلي شامل: الأرضيات، الطبلون، المقاعد، الزجاج، وكل التفاصيل',
+            'غسيل خارجي بأحتراف ومواد امنة',
+            'خدمة متنقلة سريعة ومريحة في أي مكان يناسبك',
+            'مثالية للعائلات أو أصحاب المشاوير الكثيرة'
+        ],
+        notes: [
+            'عند الاشتراك في الباقة، ما يحق للعميل إلغاء الاشتراك أو استرجاع المبلغ المدفوع.',
+            'يرجى إزالة أي أغراض شخصية من السيارة، والشركة غير مسؤولة عن أي مفقودات.',
+            'إذا بغيت تعيد جدولة الموعد، تلغيه، أو تسترجع المبلغ، لازم يكون قبل الموعد بساعة على الأقل، وإذا ما صار التغيير في الوقت المطلوب، ينخصم المبلغ كامل.',
+            'تنظيف الشنطة، الأدراج، أو السنادة يتم فقط إذا طلب العميل ذلك.',
+            'الكابتن ينتظر 15 دقيقة فقط، وإذا ما حضرت، يلغي الموعد وينخصم المبلغ كامل.',
+            'إذا حجزت الموعد وما دفعت أو ما أرسلت الموقع قبل الموعد بـ30 دقيقة، يلغي الموعد تلقائيًا.'
+        ],
+        hasCarSize: true,
+        hasPeriod: false,
+        hasAddons: false,
+        isMultiWash: true,
+        totalWashes: 8
+    },
+    'national-day': {
+        id: 'national-day',
+        name: 'عرض دام عزك يا وطن 🇸🇦',
+        currentPrice: 96,
+        oldPrice: null,
+        image: 'images/packages/national-offer.jpg',
+        validity: 'شهر واحد',
+        endDate: '25 سبتمبر',
+        description: 'اليوم الوطني السعودي 96 - نخدم وطننا .. ونعتني بسيارتك - دام عزك يا وطن',
+        features: [
+            '4 غسلات',
+            'عناية تليق بسيارتك',
+            'منظفات آمنة',
+            'في الوقت المناسب',
+            'خدمة منزلية'
+        ],
+        notes: [],
+        hasCarSize: true,
+        hasPeriod: true,
+        hasAddons: true,
+        isMultiWash: true,
+        totalWashes: 4
+    }
+};
+
+// ==========================================
+// 4. أحجام السيارات
+// ==========================================
+const CAR_SIZES = [
+    { id: 'small', name: 'صغيرة — سيدان', priceDiff: 0, showPrice: false },
+    { id: 'medium', name: 'وسط — جيب 5 مقاعد', priceDiff: 20, showPrice: true },
+    { id: 'large', name: 'كبيرة — جيب 7 مقاعد', priceDiff: 40, showPrice: true }
+];
+
+// ==========================================
+// 5. الأسئلة الشائعة
+// ==========================================
 const FAQ_DATA = [
     { q: "ليش لما ادفع من المتجر ما تظهر المواعيد؟", a: "الحجز وجدولة المواعيد يتم من خلال الواتساب لضمان تنسيق الوقت المناسب لك بدقة." },
-    { q: "سعر الغسيل يفرق على حسب الحجم؟", a: "نعم، يوجد فرق بسيط بين السيارة الكبيرة والصغيرة وهو 5 ريال للسيارة المتوسطة و 10 ريال للسيارة الكبيرة." },
+    { q: "سعر الغسيل يفرق على حسب الحجم؟", a: "نعم، يوجد فرق بسيط بين السيارة الكبيرة والصغيرة وهو 20 ريال للسيارة المتوسطة و 40 ريال للسيارة الكبيرة." },
     { q: "الي يغسل دباب او سيارة؟", a: "نقوم بغسيل الدباب والسيارات." },
     { q: "متوفر عندكم ازالة بقع؟", a: "اختصاصنا غسيل خارجي وتنظيف داخلي، ازالة البقع والتنظيف العميق. أما التلميع الداخلي فهو غير متوفر حالياً." },
     { q: "في كاش عندكم؟", a: "لا، الدفع مسبق لتأكيد الحجز وضمان جدية الموعد." },
     { q: "وش المواد الي تستخدمونها؟", a: "نستخدم مواد ألمانية عالية الجودة. لا نكتفي بوضع واكس مرة واحدة، بل نضعه مرتين: في بداية الغسيل مع الشامبو، وبعد الانتهاء من الغسيل لضمان لمعة مثالية." }
 ];
 
-const PACKAGES_DATA = {
-    'internal-external': { name: 'باقة غسيل سيارة داخلي وخارجي', price: 35 },
-    'gift': { name: 'باقة غسيل سيارة اهداء', price: 35 },
-    'external': { name: 'غسيل سيارة خارجي فقط', price: 31, note: 'الأحياء المغطاة: شرق الرياض' },
-    '4washes': { name: 'باقة غسيل سياره 4 غسلات (المدة شهران)', price: 132 },
-    '8washes': { name: 'عرض 8 غسلات', price: 245, desc: 'مع عروض غسيل سيارات unlimited shine الجديد، سيارتك دائمًا في أبهى صورة، احصل على 8 غسلات شاملة (داخلي وخارجي) بسعر 280 ريال فقط، يعني الغسلة الواحدة بـ 35 ريال فقط...' },
-    'national-day': { name: 'عرض اليوم الوطني 96', price: 96 }
+// ==========================================
+// 6. حالة التطبيق العامة
+// ==========================================
+let bookingState = {
+    step: 1,
+    packageId: null,
+    packageName: '',
+    basePrice: 0,
+    totalWashes: 1,
+    isMultiWash: false,
+    carSize: null,
+    carSizeName: '',
+    carSizeDiff: 0,
+    neighborhood: null,
+    period: null,
+    periodName: '',
+    addons: [],
+    addonsPrice: 0,
+    totalPrice: 0
+};
+
+let cart = { items: [] };
+let currentPackageDetailsId = null;
+
+// حالة سلايدر الباقات
+let sliderState = {
+    currentIndex: 0,
+    totalSlides: 5,
+    isDragging: false,
+    startX: 0
+};
+
+// حالة سلايدر Before/After
+let baSliderState = {
+    currentIndex: 0,
+    totalPairs: 3,
+    isDragging: false,
+    startX: 0
 };
 
 // ==========================================
-// 2. تهيئة الصفحة
+// 7. تهيئة الصفحة
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
     initHeaderScrollEffect();
-    initFAQ();
     initNeighborhoods();
     initBeforeAfterSlider();
-    initCountdown();
+    initPackageSlider();
+    initAnimatedMessage();
+    checkAndSwitchOffer();
+    loadCartFromLocalStorage();
+    updateCartUI();
     
-    // استرجاع آخر حي من LocalStorage
-    const savedNeighborhood = localStorage.getItem('last_neighborhood');
-    if (savedNeighborhood) {
-        // يمكن استخدامه لملء الحقل تلقائياً إذا لزم الأمر
+    // إغلاق Modals عند الضغط على Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeLightbox();
+            closeBooking();
+            closePackageDetails();
+            closeCart();
+        }
+    });
+    
+    // إغلاق Lightbox عند الضغط خارجه
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox) {
+        lightbox.addEventListener('click', (e) => {
+            if (e.target.id === 'lightbox') closeLightbox();
+        });
     }
+    
+    // إغلاق Modals عند الضغط خارجها
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    });
 });
 
 // ==========================================
-// 3. تأثيرات الحركة والتمرير
+// 8. تأثيرات الحركة والتمرير
 // ==========================================
 function initScrollAnimations() {
     const observer = new IntersectionObserver((entries) => {
@@ -85,69 +322,217 @@ function initHeaderScrollEffect() {
 }
 
 // ==========================================
-// 4. الأسئلة الشائعة
+// 9. المربع المتحرك
 // ==========================================
-function initFAQ() {
-    const container = document.getElementById('faq-container');
-    if (!container) return;
+function initAnimatedMessage() {
+    const messages = document.querySelectorAll('.message-slide');
+    if (messages.length < 2) return;
     
-    container.innerHTML = FAQ_DATA.map((faq, i) => `
-        <div class="faq-item">
-            <button class="faq-question" onclick="toggleFAQ(this)">
-                <span>${faq.q}</span>
-                <span class="faq-icon">+</span>
-            </button>
-            <div class="faq-answer">
-                <p>${faq.a}</p>
-            </div>
-        </div>
-    `).join('');
+    let currentIndex = 0;
+    
+    setInterval(() => {
+        messages[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % messages.length;
+        messages[currentIndex].classList.add('active');
+    }, 4000);
 }
 
-function toggleFAQ(btn) {
-    const item = btn.parentElement;
-    const isActive = item.classList.contains('active');
+// ==========================================
+// 10. التبديل التلقائي بين العروض
+// ==========================================
+function checkAndSwitchOffer() {
+    const now = new Date().getTime();
+    const endDate = new Date(NATIONAL_OFFER_END_DATE).getTime();
     
-    // إغلاق جميع العناصر الأخرى
-    document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+    const nationalOffer = document.getElementById('national-offer');
+    const packagesOffer = document.getElementById('8-packages-offer');
     
-    // فتح العنصر الحالي إذا لم يكن مفتوحاً
-    if (!isActive) {
-        item.classList.add('active');
+    if (now > endDate) {
+        if (nationalOffer) nationalOffer.style.display = 'none';
+        if (packagesOffer) packagesOffer.style.display = 'block';
+        if (window.countdownInterval) clearInterval(window.countdownInterval);
+    } else {
+        if (nationalOffer) nationalOffer.style.display = 'block';
+        if (packagesOffer) packagesOffer.style.display = 'none';
+        
+        if (!window.countdownInterval) {
+            window.countdownInterval = setInterval(() => {
+                const remaining = endDate - new Date().getTime();
+                if (remaining <= 0) {
+                    checkAndSwitchOffer();
+                } else {
+                    updateCountdown(remaining);
+                }
+            }, 1000);
+        } else {
+            updateCountdown(endDate - new Date().getTime());
+        }
+    }
+}
+
+function updateCountdown(remainingMs) {
+    const el = document.getElementById('countdown-date');
+    if (!el) return;
+    
+    const days = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
+    if (days > 0) {
+        el.textContent = `ينتهي خلال ${days} يوم (25 سبتمبر)`;
+    } else {
+        el.textContent = '25 سبتمبر';
     }
 }
 
 // ==========================================
-// 5. الأحياء والبحث
+// 11. سلايدر الباقات
 // ==========================================
-function initNeighborhoods() {
-    const list = document.getElementById('neighborhood-list');
-    if (!list) return;
+function initPackageSlider() {
+    const track = document.getElementById('slider-track');
+    const viewport = document.querySelector('.slider-viewport');
+    if (!track || !viewport) return;
     
-    list.innerHTML = NEIGHBORHOODS.map(n => `
-        <div class="neighborhood-item" data-name="${n}" onclick="selectNeighborhood(this)">${n}</div>
-    `).join('');
+    // Touch events
+    viewport.addEventListener('touchstart', (e) => {
+        sliderState.isDragging = true;
+        sliderState.startX = e.touches[0].clientX;
+    }, { passive: true });
+    
+    viewport.addEventListener('touchend', (e) => {
+        if (!sliderState.isDragging) return;
+        sliderState.isDragging = false;
+        const endX = e.changedTouches[0].clientX;
+        const diff = sliderState.startX - endX;
+        
+        if (diff > 50) {
+            nextPackageSlide();
+        } else if (diff < -50) {
+            prevPackageSlide();
+        }
+    });
+    
+    // Mouse drag (Desktop)
+    viewport.addEventListener('mousedown', (e) => {
+        sliderState.isDragging = true;
+        sliderState.startX = e.clientX;
+        viewport.style.cursor = 'grabbing';
+    });
+    
+    window.addEventListener('mouseup', (e) => {
+        if (!sliderState.isDragging) return;
+        sliderState.isDragging = false;
+        viewport.style.cursor = '';
+        const endX = e.clientX;
+        const diff = sliderState.startX - endX;
+        
+        if (diff > 50) {
+            nextPackageSlide();
+        } else if (diff < -50) {
+            prevPackageSlide();
+        }
+    });
+    
+    updateSliderPosition();
 }
 
-function filterNeighborhoods() {
-    const input = document.getElementById('neighborhood-search').value.toLowerCase();
-    document.querySelectorAll('.neighborhood-item').forEach(item => {
-        const name = item.dataset.name.toLowerCase();
-        item.style.display = name.includes(input) ? 'block' : 'none';
+function nextPackageSlide() {
+    if (sliderState.currentIndex < sliderState.totalSlides - 1) {
+        sliderState.currentIndex++;
+        updateSliderPosition();
+    }
+}
+
+function prevPackageSlide() {
+    if (sliderState.currentIndex > 0) {
+        sliderState.currentIndex--;
+        updateSliderPosition();
+    }
+}
+
+function goToPackageSlide(index) {
+    if (index >= 0 && index < sliderState.totalSlides) {
+        sliderState.currentIndex = index;
+        updateSliderPosition();
+    }
+}
+
+function updateSliderPosition() {
+    const track = document.getElementById('slider-track');
+    if (!track) return;
+    
+    const slide = track.querySelector('.package-slide');
+    if (!slide) return;
+    
+    const slideWidth = slide.offsetWidth;
+    const gap = 12;
+    const offset = sliderState.currentIndex * (slideWidth + gap);
+    
+    track.style.transform = `translateX(${offset}px)`;
+    
+    document.querySelectorAll('.slider-dots .dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === sliderState.currentIndex);
     });
 }
 
 // ==========================================
-// 6. Before / After Slider
+// 12. Before/After Slider - 3 أزواج
 // ==========================================
 function initBeforeAfterSlider() {
-    const wrapper = document.querySelector('.before-after-wrapper');
-    const beforeWrapper = document.querySelector('.before-image-wrapper');
-    const handle = document.getElementById('ba-handle');
+    // تهيئة السحب لكل زوج
+    for (let i = 1; i <= 3; i++) {
+        initSingleBeforeAfter(i);
+    }
+    
+    // تهيئة سلايدر التنقل بين الأزواج
+    const viewport = document.querySelector('.ba-slider-viewport');
+    if (!viewport) return;
+    
+    viewport.addEventListener('touchstart', (e) => {
+        baSliderState.isDragging = true;
+        baSliderState.startX = e.touches[0].clientX;
+    }, { passive: true });
+    
+    viewport.addEventListener('touchend', (e) => {
+        if (!baSliderState.isDragging) return;
+        baSliderState.isDragging = false;
+        const endX = e.changedTouches[0].clientX;
+        const diff = baSliderState.startX - endX;
+        
+        if (diff > 50) {
+            nextBeforeAfter();
+        } else if (diff < -50) {
+            prevBeforeAfter();
+        }
+    });
+    
+    viewport.addEventListener('mousedown', (e) => {
+        baSliderState.isDragging = true;
+        baSliderState.startX = e.clientX;
+        viewport.style.cursor = 'grabbing';
+    });
+    
+    window.addEventListener('mouseup', (e) => {
+        if (!baSliderState.isDragging) return;
+        baSliderState.isDragging = false;
+        viewport.style.cursor = '';
+        const endX = e.clientX;
+        const diff = baSliderState.startX - endX;
+        
+        if (diff > 50) {
+            nextBeforeAfter();
+        } else if (diff < -50) {
+            prevBeforeAfter();
+        }
+    });
+}
+
+function initSingleBeforeAfter(index) {
+    const wrapper = document.getElementById(`ba-wrapper-${index}`);
+    const beforeWrapper = wrapper?.querySelector('.before-image-wrapper');
+    const handle = document.getElementById(`ba-handle-${index}`);
+    
     if (!wrapper || !beforeWrapper || !handle) return;
-
+    
     let isDragging = false;
-
+    
     const updateSlider = (x) => {
         const rect = wrapper.getBoundingClientRect();
         let pos = ((x - rect.left) / rect.width) * 100;
@@ -156,82 +541,402 @@ function initBeforeAfterSlider() {
         beforeWrapper.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
         handle.style.left = `${pos}%`;
     };
-
-    wrapper.addEventListener('mousedown', (e) => { isDragging = true; updateSlider(e.clientX); });
-    window.addEventListener('mousemove', (e) => { if (isDragging) { e.preventDefault(); updateSlider(e.clientX); } });
+    
+    wrapper.addEventListener('mousedown', (e) => { 
+        isDragging = true; 
+        updateSlider(e.clientX); 
+        e.preventDefault();
+    });
+    
+    window.addEventListener('mousemove', (e) => { 
+        if (isDragging) { 
+            updateSlider(e.clientX); 
+        } 
+    });
+    
     window.addEventListener('mouseup', () => { isDragging = false; });
-
-    wrapper.addEventListener('touchstart', (e) => { isDragging = true; updateSlider(e.touches[0].clientX); }, { passive: true });
+    
+    wrapper.addEventListener('touchstart', (e) => { 
+        isDragging = true; 
+        updateSlider(e.touches[0].clientX); 
+    }, { passive: true });
+    
     wrapper.addEventListener('touchmove', (e) => { 
         if (isDragging) { 
             updateSlider(e.touches[0].clientX); 
         } 
     }, { passive: true });
+    
     wrapper.addEventListener('touchend', () => { isDragging = false; });
 }
 
+function nextBeforeAfter() {
+    if (baSliderState.currentIndex < baSliderState.totalPairs - 1) {
+        baSliderState.currentIndex++;
+        updateBeforeAfterPosition();
+    }
+}
+
+function prevBeforeAfter() {
+    if (baSliderState.currentIndex > 0) {
+        baSliderState.currentIndex--;
+        updateBeforeAfterPosition();
+    }
+}
+
+function goToBeforeAfter(index) {
+    if (index >= 0 && index < baSliderState.totalPairs) {
+        baSliderState.currentIndex = index;
+        updateBeforeAfterPosition();
+    }
+}
+
+function updateBeforeAfterPosition() {
+    const track = document.getElementById('ba-slider-track');
+    if (!track) return;
+    
+    const offset = baSliderState.currentIndex * 100;
+    track.style.transform = `translateX(-${offset}%)`;
+    
+    document.querySelectorAll('.ba-slider-dots .ba-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === baSliderState.currentIndex);
+    });
+}
+
 function openLightbox() {
-    const img = document.querySelector('.after-image').src;
-    document.getElementById('lightbox-img').src = img;
-    document.getElementById('lightbox').classList.add('active');
-    document.body.style.overflow = 'hidden';
+    const currentIndex = baSliderState.currentIndex;
+    const afterImg = document.querySelector(`#ba-wrapper-${currentIndex + 1} .after-image`);
+    if (afterImg) {
+        const img = document.getElementById('lightbox-img');
+        if (img) {
+            img.src = afterImg.src;
+            img.alt = afterImg.alt;
+        }
+        document.getElementById('lightbox').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function closeLightbox() {
-    document.getElementById('lightbox').classList.remove('active');
+    const lb = document.getElementById('lightbox');
+    if (lb) lb.classList.remove('active');
     document.body.style.overflow = '';
 }
 
 // ==========================================
-// 7. نظام الحجز (Booking System)
+// 13. Modal تفاصيل الباقة
 // ==========================================
-let bookingState = {
-    step: 1,
-    packageId: null,
-    packageName: '',
-    basePrice: 0,
-    carSize: null,
-    carSizeName: '',
-    carSizeDiff: 0,
-    neighborhood: null,
-    period: null,
-    periodName: '',
-    addons: []
-};
-
-function openBooking(packageId) {
+function openPackageDetails(packageId) {
     const pkg = PACKAGES_DATA[packageId];
     if (!pkg) return;
+    
+    currentPackageDetailsId = packageId;
+    
+    const img = document.getElementById('pd-image');
+    if (img) {
+        img.src = pkg.image;
+        img.alt = pkg.name;
+    }
+    
+    const title = document.getElementById('pd-title');
+    if (title) title.textContent = pkg.name;
+    
+    const currentPrice = document.getElementById('pd-current-price');
+    if (currentPrice) currentPrice.textContent = `${pkg.currentPrice} ريال`;
+    
+    const oldPrice = document.getElementById('pd-old-price');
+    if (oldPrice) {
+        if (pkg.oldPrice) {
+            oldPrice.textContent = `${pkg.oldPrice} ريال`;
+            oldPrice.style.display = 'inline';
+        } else {
+            oldPrice.style.display = 'none';
+        }
+    }
+    
+    const validitySection = document.getElementById('pd-validity');
+    if (validitySection && pkg.validity) {
+        validitySection.style.display = 'flex';
+        const validityText = document.getElementById('pd-validity-text');
+        if (validityText) validityText.textContent = `المدة: ${pkg.validity}`;
+    } else if (validitySection) {
+        validitySection.style.display = 'none';
+    }
+    
+    const desc = document.getElementById('pd-description');
+    if (desc) desc.textContent = pkg.description;
+    
+    fillList('pd-features-section', 'pd-features', pkg.features);
+    fillList('pd-notes-section', 'pd-notes', pkg.notes);
+    
+    document.getElementById('package-details-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function fillList(sectionId, listId, items) {
+    const section = document.getElementById(sectionId);
+    const list = document.getElementById(listId);
+    
+    if (!section || !list) return;
+    
+    if (items && items.length > 0) {
+        section.style.display = 'block';
+        list.innerHTML = items.map(item => `<li>${item}</li>`).join('');
+    } else {
+        section.style.display = 'none';
+    }
+}
+
+function closePackageDetails() {
+    const modal = document.getElementById('package-details-modal');
+    if (modal) modal.classList.remove('active');
+    document.body.style.overflow = '';
+    currentPackageDetailsId = null;
+}
+
+function bookThisPackage() {
+    if (!currentPackageDetailsId) return;
+    closePackageDetails();
+    setTimeout(() => {
+        openBooking(currentPackageDetailsId);
+    }, 300);
+}
+
+// ==========================================
+// 14. السلة
+// ==========================================
+function loadCartFromLocalStorage() {
+    try {
+        const saved = localStorage.getItem('unlimitedShineCart');
+        if (saved) {
+            cart = JSON.parse(saved);
+            if (!cart.items) cart.items = [];
+        }
+    } catch (e) {
+        cart = { items: [] };
+    }
+}
+
+function saveCartToLocalStorage() {
+    try {
+        localStorage.setItem('unlimitedShineCart', JSON.stringify(cart));
+    } catch (e) {
+        console.warn('فشل حفظ السلة:', e);
+    }
+}
+
+function updateCartUI() {
+    const countEl = document.getElementById('cart-count');
+    if (countEl) {
+        const count = cart.items.length;
+        countEl.textContent = count;
+        countEl.style.display = count > 0 ? 'flex' : 'none';
+    }
+    
+    renderCartItems();
+}
+
+function renderCartItems() {
+    const container = document.getElementById('cart-items');
+    const emptyMsg = document.getElementById('cart-empty');
+    const totalSection = document.getElementById('cart-total-section');
+    
+    if (!container) return;
+    
+    if (cart.items.length === 0) {
+        if (emptyMsg) emptyMsg.style.display = 'block';
+        if (totalSection) totalSection.style.display = 'none';
+        container.innerHTML = '';
+        return;
+    }
+    
+    if (emptyMsg) emptyMsg.style.display = 'none';
+    if (totalSection) totalSection.style.display = 'flex';
+    
+    container.innerHTML = cart.items.map((item, index) => `
+        <div class="cart-item">
+            <div class="cart-item-header">
+                <div class="cart-item-name">${item.packageName}</div>
+                <button class="cart-item-remove" onclick="removeFromCart('${item.id}')" aria-label="حذف">&times;</button>
+            </div>
+            <div class="cart-item-details">
+                <div class="cart-item-detail-row">
+                    <span>حجم السيارة:</span>
+                    <span>${item.carSizeName}</span>
+                </div>
+                <div class="cart-item-detail-row">
+                    <span>الحي:</span>
+                    <span>${item.neighborhood}</span>
+                </div>
+                ${item.period ? `<div class="cart-item-detail-row"><span>الفترة:</span><span>${item.period}</span></div>` : ''}
+                ${item.addons && item.addons.length > 0 ? `<div class="cart-item-detail-row"><span>الإضافات:</span><span>${item.addons.map(a => a.name).join('، ')}</span></div>` : ''}
+            </div>
+            <div class="cart-item-price">${item.totalPrice} ريال</div>
+        </div>
+    `).join('');
+    
+    const totalEl = document.getElementById('cart-total-price');
+    if (totalEl) {
+        const total = cart.items.reduce((sum, item) => sum + item.totalPrice, 0);
+        totalEl.textContent = `${total} ريال`;
+    }
+}
+
+function openCart() {
+    renderCartItems();
+    document.getElementById('cart-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCart() {
+    document.getElementById('cart-modal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function removeFromCart(id) {
+    cart.items = cart.items.filter(item => item.id !== id);
+    saveCartToLocalStorage();
+    updateCartUI();
+}
+
+function clearCart() {
+    if (confirm('هل أنت متأكد من إفراغ السلة؟')) {
+        cart.items = [];
+        saveCartToLocalStorage();
+        updateCartUI();
+    }
+}
+
+function proceedToBooking() {
+    if (cart.items.length === 0) {
+        alert('السلة فارغة');
+        return;
+    }
+    
+    let message = `طلب حجز جديد من السلة – UNLIMITED SHINE\n\n`;
+    let grandTotal = 0;
+    
+    cart.items.forEach((item, index) => {
+        message += `العنصر ${index + 1}:\n`;
+        message += `الباقة: ${item.packageName}\n`;
+        message += `حجم السيارة: ${item.carSizeName}\n`;
+        message += `الحي: ${item.neighborhood}\n`;
+        if (item.period) {
+            message += `الفترة: ${item.period}\n`;
+        }
+        if (item.addons && item.addons.length > 0) {
+            message += `الإضافات: ${item.addons.map(a => a.name).join('، ')}\n`;
+        } else {
+            message += `الإضافات: لا يوجد\n`;
+        }
+        message += `السعر: ${item.totalPrice} ريال\n\n`;
+        grandTotal += item.totalPrice;
+    });
+    
+    message += `الإجمالي النهائي: ${grandTotal} ريال`;
+    
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`${PROJECT_DATA.whatsappLink}?text=${encodedMessage}`, '_blank');
+    
+    cart.items = [];
+    saveCartToLocalStorage();
+    updateCartUI();
+    closeCart();
+}
+
+// ==========================================
+// 15. نظام الحجز
+// ==========================================
+function getValidSteps() {
+    const pkg = PACKAGES_DATA[bookingState.packageId];
+    if (!pkg) return [1, 2, 3, 4, 5, 6];
+    
+    if (!pkg.hasPeriod && !pkg.hasAddons) {
+        return [1, 2, 3, 6];
+    }
+    return [1, 2, 3, 4, 5, 6];
+}
+
+function openBooking(packageId, preselected = {}) {
+    const pkg = PACKAGES_DATA[packageId];
+    if (!pkg) return;
+
+    let initCarSize = preselected.carSize || null;
+    let initCarSizeName = '';
+    let initCarSizeDiff = 0;
+
+    if (initCarSize) {
+        const sizeData = CAR_SIZES.find(s => s.id === initCarSize);
+        if (sizeData) {
+            initCarSizeName = sizeData.name;
+            initCarSizeDiff = sizeData.priceDiff;
+        }
+    }
 
     bookingState = {
         step: 1,
         packageId: packageId,
         packageName: pkg.name,
-        basePrice: pkg.price,
-        carSize: null,
-        carSizeName: '',
-        carSizeDiff: 0,
+        basePrice: pkg.currentPrice,
+        totalWashes: pkg.totalWashes || 1,
+        isMultiWash: pkg.isMultiWash || false,
+        carSize: initCarSize,
+        carSizeName: initCarSizeName,
+        carSizeDiff: initCarSizeDiff,
         neighborhood: localStorage.getItem('last_neighborhood') || null,
         period: null,
         periodName: '',
-        addons: []
+        addons: preselected.addons || [],
+        addonsPrice: 0,
+        totalPrice: pkg.currentPrice
     };
 
-    // إعادة تعيين واجهة الحجز
     document.querySelectorAll('.booking-step').forEach(s => s.classList.remove('active'));
     document.querySelector('.booking-step[data-step="1"]').classList.add('active');
     
-    // ملء خيار الخدمة تلقائياً
     const serviceOptions = document.querySelector('.service-options');
-    serviceOptions.innerHTML = `
-        <div class="size-card selected" style="cursor: default;">
-            <div class="size-title">${pkg.name}</div>
-            <div class="size-price">${pkg.price} ريال</div>
-        </div>
-    `;
-    if (pkg.note) {
-        serviceOptions.innerHTML += `<p style="color: var(--color-warning); font-size: 0.875rem; margin-top: 0.5rem; text-align: center;">${pkg.note}</p>`;
+    if (serviceOptions) {
+        serviceOptions.innerHTML = `
+            <div class="size-card selected" style="cursor: default;">
+                <div class="size-title">${pkg.name}</div>
+                <div class="size-price">${pkg.currentPrice} ريال</div>
+            </div>
+        `;
     }
+
+    const periodStep = document.getElementById('period-step');
+    const addonsStep = document.getElementById('addons-step');
+    const periodStepperItem = document.getElementById('period-stepper-item');
+    const addonsStepperItem = document.getElementById('addons-stepper-item');
+    const periodStepperLine = document.getElementById('period-stepper-line');
+    const addonsStepperLine = document.getElementById('addons-stepper-line');
+    const summaryPeriodRow = document.getElementById('summary-period-row');
+    
+    if (pkg.hasPeriod === false) {
+        if (periodStep) periodStep.style.display = 'none';
+        if (periodStepperItem) periodStepperItem.style.display = 'none';
+        if (periodStepperLine) periodStepperLine.style.display = 'none';
+        if (summaryPeriodRow) summaryPeriodRow.style.display = 'none';
+    } else {
+        if (periodStep) periodStep.style.display = 'block';
+        if (periodStepperItem) periodStepperItem.style.display = 'flex';
+        if (periodStepperLine) periodStepperLine.style.display = 'block';
+        if (summaryPeriodRow) summaryPeriodRow.style.display = 'flex';
+    }
+    
+    if (pkg.hasAddons === false) {
+        if (addonsStep) addonsStep.style.display = 'none';
+        if (addonsStepperItem) addonsStepperItem.style.display = 'none';
+        if (addonsStepperLine) addonsStepperLine.style.display = 'none';
+    } else {
+        if (addonsStep) addonsStep.style.display = 'block';
+        if (addonsStepperItem) addonsStepperItem.style.display = 'flex';
+        if (addonsStepperLine) addonsStepperLine.style.display = 'block';
+    }
+
+    document.querySelectorAll('.addon-option input[type="checkbox"]').forEach(cb => {
+        cb.checked = false;
+    });
 
     updateStepper();
     updateNavigationButtons();
@@ -248,10 +953,16 @@ function selectCarSize(el) {
     document.querySelectorAll('.size-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
     
-    bookingState.carSize = el.dataset.size;
-    bookingState.carSizeName = el.querySelector('.size-title').textContent;
-    bookingState.carSizeDiff = parseInt(el.dataset.diff);
+    const sizeId = el.dataset.size;
+    const sizeData = CAR_SIZES.find(s => s.id === sizeId);
     
+    if (sizeData) {
+        bookingState.carSize = sizeData.id;
+        bookingState.carSizeName = sizeData.name;
+        bookingState.carSizeDiff = sizeData.priceDiff;
+    }
+    
+    updateBookingPrice();
     setTimeout(() => nextStep(), 300);
 }
 
@@ -273,9 +984,9 @@ function selectPeriod(el) {
     setTimeout(() => nextStep(), 300);
 }
 
-// منطق الإضافات المتبادل
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.addon-option input[type="checkbox"]').forEach(checkbox => {
+    const addonCheckboxes = document.querySelectorAll('.addon-option input[type="checkbox"]');
+    addonCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             const value = this.value;
             const price = parseInt(this.dataset.price);
@@ -283,19 +994,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (this.checked) {
                 if (value === 'none') {
-                    // إلغاء باقي الإضافات
                     document.querySelectorAll('.addon-option input[type="checkbox"]').forEach(cb => {
-                        if (cb.value !== 'none') {
-                            cb.checked = false;
-                        }
+                        if (cb.value !== 'none') cb.checked = false;
                     });
                     bookingState.addons = [{ name: 'بدون تكييس', price: 0 }];
                 } else {
-                    // إلغاء "بدون تكييس"
                     const noneCb = document.querySelector('input[value="none"]');
                     if (noneCb) noneCb.checked = false;
                     
-                    // إضافة الإضافة الجديدة
                     bookingState.addons = bookingState.addons.filter(a => a.name !== 'بدون تكييس');
                     if (!bookingState.addons.find(a => a.name === name)) {
                         bookingState.addons.push({ name, price });
@@ -305,38 +1011,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 bookingState.addons = bookingState.addons.filter(a => a.name !== name);
             }
             
-            updateBookingSummary();
+            updateBookingPrice();
         });
     });
 });
 
-function updateBookingSummary() {
-    const totalAddonsPrice = bookingState.addons.reduce((sum, a) => sum + a.price, 0);
-    const totalPrice = bookingState.basePrice + bookingState.carSizeDiff + totalAddonsPrice;
+function updateBookingPrice() {
+    bookingState.addonsPrice = bookingState.addons.reduce((sum, a) => sum + a.price, 0);
+    
+    if (bookingState.isMultiWash) {
+        bookingState.totalPrice = bookingState.basePrice + (bookingState.carSizeDiff * bookingState.totalWashes) + bookingState.addonsPrice;
+    } else {
+        bookingState.totalPrice = bookingState.basePrice + bookingState.carSizeDiff + bookingState.addonsPrice;
+    }
+    
+    updateBookingSummary();
+}
 
+function updateBookingSummary() {
     document.getElementById('summary-service').textContent = bookingState.packageName;
     document.getElementById('summary-car-size').textContent = bookingState.carSizeName || '-';
     document.getElementById('summary-neighborhood').textContent = bookingState.neighborhood || '-';
     document.getElementById('summary-period').textContent = bookingState.periodName || '-';
     document.getElementById('summary-addons').textContent = bookingState.addons.length > 0 
-        ? bookingState.addons.map(a => a.name).join('، ') 
+        ? bookingState.addons.map(a => a.name).join('، ')
         : 'لا يوجد';
-    document.getElementById('summary-total-price').textContent = `${totalPrice} ريال`;
-
-    // تحديث معاينة الواتساب
-    const waMessage = `طلب حجز جديد – UNLIMITED SHINE\n\n` +
-        `الخدمة: ${bookingState.packageName}\n` +
-        `حجم السيارة: ${bookingState.carSizeName || 'غير محدد'}\n` +
-        `الحي: ${bookingState.neighborhood || 'غير محدد'}\n` +
-        `الفترة: ${bookingState.periodName || 'غير محدد'}\n` +
-        `الإضافات: ${bookingState.addons.length > 0 ? bookingState.addons.map(a => a.name).join('، ') : 'لا يوجد'}\n` +
-        `الإجمالي: ${totalPrice} ريال`;
-    
-    document.getElementById('whatsapp-message').textContent = waMessage;
-}
-
-function updateBookingPrice() {
-    updateBookingSummary();
+    document.getElementById('summary-total-price').textContent = `${bookingState.totalPrice} ريال`;
 }
 
 function nextStep() {
@@ -345,9 +1045,14 @@ function nextStep() {
         return;
     }
 
-    if (bookingState.step < 6) {
+    const validSteps = getValidSteps();
+    const currentIndex = validSteps.indexOf(bookingState.step);
+    
+    if (currentIndex < validSteps.length - 1) {
+        const nextStepNum = validSteps[currentIndex + 1];
+        
         document.querySelector(`.booking-step[data-step="${bookingState.step}"]`).classList.remove('active');
-        bookingState.step++;
+        bookingState.step = nextStepNum;
         document.querySelector(`.booking-step[data-step="${bookingState.step}"]`).classList.add('active');
         
         if (bookingState.step === 6) {
@@ -360,9 +1065,14 @@ function nextStep() {
 }
 
 function prevStep() {
-    if (bookingState.step > 1) {
+    const validSteps = getValidSteps();
+    const currentIndex = validSteps.indexOf(bookingState.step);
+    
+    if (currentIndex > 0) {
+        const prevStepNum = validSteps[currentIndex - 1];
+        
         document.querySelector(`.booking-step[data-step="${bookingState.step}"]`).classList.remove('active');
-        bookingState.step--;
+        bookingState.step = prevStepNum;
         document.querySelector(`.booking-step[data-step="${bookingState.step}"]`).classList.add('active');
         
         updateStepper();
@@ -373,31 +1083,103 @@ function prevStep() {
 function validateStep(step) {
     if (step === 2 && !bookingState.carSize) return false;
     if (step === 3 && !bookingState.neighborhood) return false;
-    if (step === 4 && !bookingState.period) return false;
+    
+    const pkg = PACKAGES_DATA[bookingState.packageId];
+    if (pkg && pkg.hasPeriod && step === 4 && !bookingState.period) return false;
+    
     return true;
 }
 
 function updateStepper() {
+    const validSteps = getValidSteps();
     document.querySelectorAll('.stepper-item').forEach(item => {
         const s = parseInt(item.dataset.step);
         item.classList.remove('active', 'completed');
-        if (s === bookingState.step) item.classList.add('active');
-        else if (s < bookingState.step) item.classList.add('completed');
+        
+        if (!validSteps.includes(s)) {
+            item.style.display = 'none';
+            const nextSibling = item.nextElementSibling;
+            if (nextSibling && nextSibling.classList.contains('stepper-line')) {
+                nextSibling.style.display = 'none';
+            }
+        } else {
+            item.style.display = 'flex';
+            const line = item.nextElementSibling;
+            if (line && line.classList.contains('stepper-line')) {
+                line.style.display = 'block';
+            }
+            
+            if (s === bookingState.step) {
+                item.classList.add('active');
+            } else if (validSteps.indexOf(s) < validSteps.indexOf(bookingState.step)) {
+                item.classList.add('completed');
+            }
+        }
     });
 }
 
 function updateNavigationButtons() {
     const prevBtn = document.getElementById('btn-prev');
     const nextBtn = document.getElementById('btn-next');
-    
-    prevBtn.style.display = bookingState.step === 1 ? 'none' : 'inline-flex';
-    
-    if (bookingState.step === 6) {
-        nextBtn.style.display = 'none';
-    } else {
-        nextBtn.style.display = 'inline-flex';
-        nextBtn.textContent = bookingState.step === 5 ? 'مراجعة الحجز ✓' : 'التالي →';
+    const validSteps = getValidSteps();
+    const currentIndex = validSteps.indexOf(bookingState.step);
+    const isLastStep = currentIndex === validSteps.length - 1;
+
+    if (prevBtn) {
+        prevBtn.style.display = currentIndex === 0 ? 'none' : 'inline-flex';
     }
+    
+    if (nextBtn) {
+        if (isLastStep) {
+            nextBtn.style.display = 'none';
+        } else {
+            nextBtn.style.display = 'inline-flex';
+            const nextStepNum = validSteps[currentIndex + 1];
+            nextBtn.textContent = nextStepNum === 6 ? 'مراجعة الطلب ✓' : 'التالي →';
+        }
+    }
+}
+
+function addToCartFromBooking() {
+    if (!bookingState.packageId) return;
+    
+    const newItem = {
+        id: Date.now().toString(),
+        packageId: bookingState.packageId,
+        packageName: bookingState.packageName,
+        carSize: bookingState.carSize,
+        carSizeName: bookingState.carSizeName,
+        carSizeDiff: bookingState.carSizeDiff,
+        neighborhood: bookingState.neighborhood,
+        period: bookingState.periodName,
+        addons: [...bookingState.addons],
+        addonsPrice: bookingState.addonsPrice,
+        totalWashes: bookingState.totalWashes,
+        totalPrice: bookingState.totalPrice
+    };
+    
+    cart.items.push(newItem);
+    saveCartToLocalStorage();
+    updateCartUI();
+    closeBooking();
+    
+    bookingState = {
+        step: 1,
+        packageId: null,
+        packageName: '',
+        basePrice: 0,
+        totalWashes: 1,
+        isMultiWash: false,
+        carSize: null,
+        carSizeName: '',
+        carSizeDiff: 0,
+        neighborhood: null,
+        period: null,
+        periodName: '',
+        addons: [],
+        addonsPrice: 0,
+        totalPrice: 0
+    };
 }
 
 function confirmBooking() {
@@ -407,46 +1189,32 @@ function confirmBooking() {
     closeBooking();
 }
 
-function scrollToBooking() {
-    document.getElementById('packages').scrollIntoView({ behavior: 'smooth' });
-}
-
-function openPackagePage(packageId) {
-    // في هذه المرحلة، يمكن توجيه المستخدم لصفحة تفاصيل الباقة
-    // حالياً سنفتح الحجز مباشرة مع تحديد الباقة
-    openBooking(packageId);
-}
-
 // ==========================================
-// 8. عداد اليوم الوطني
+// 16. دوال مساعدة
 // ==========================================
-function initCountdown() {
-    const endDate = new Date('2026-09-25T23:59:59').getTime();
-    const el = document.getElementById('countdown-date');
+function initNeighborhoods() {
+    const list = document.getElementById('neighborhood-list');
+    if (!list) return;
     
-    const timer = setInterval(() => {
-        const now = new Date().getTime();
-        const distance = endDate - now;
-        
-        if (distance < 0) {
-            clearInterval(timer);
-            if (el) el.textContent = 'انتهى العرض';
-            return;
-        }
-        
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        if (el) el.textContent = `ينتهي خلال ${days} يوم (25 سبتمبر)`;
-    }, 1000 * 60 * 60); // تحديث كل ساعة لتوفير الأداء
+    list.innerHTML = NEIGHBORHOODS.map(n => `
+        <div class="neighborhood-item" data-name="${n}" onclick="selectNeighborhood(this)" role="button" tabindex="0">${n}</div>
+    `).join('');
 }
 
-// إغلاق Lightbox عند الضغط خارجه أو زر Escape
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        closeLightbox();
-        closeBooking();
-    }
-});
+function filterNeighborhoods() {
+    const input = document.getElementById('neighborhood-search');
+    if (!input) return;
+    const searchTerm = input.value.toLowerCase().trim();
+    
+    document.querySelectorAll('.neighborhood-item').forEach(item => {
+        const name = item.dataset.name.toLowerCase();
+        item.style.display = name.includes(searchTerm) ? 'block' : 'none';
+    });
+}
 
-document.getElementById('lightbox').addEventListener('click', (e) => {
-    if (e.target.id === 'lightbox') closeLightbox();
-});
+function scrollToBooking() {
+    const packagesSlider = document.getElementById('packages-slider');
+    if (packagesSlider) {
+        packagesSlider.scrollIntoView({ behavior: 'smooth' });
+    }
+}
