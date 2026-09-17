@@ -8,7 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=8">
+    <link rel="preload" as="image" href="images/packages/internal-external.jpg" fetchpriority="high">
+    <link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
 
@@ -39,17 +40,19 @@
     </div>
 
     <main>
-        <!-- Hero Section -->
+        <!-- Hero Section — Phase 2 Final -->
         <section id="hero" class="hero-section">
-            <div class="hero-bg-glow" aria-hidden="true"></div>
+            <div class="hero-bg" aria-hidden="true"></div>
             <div class="container hero-content">
                 <div class="hero-text-wrapper fade-in-up">
                     <h1 class="hero-title">UNLIMITED <span class="text-gradient">SHINE</span></h1>
-                    <p class="hero-subtitle">غسيل سيارتك... يأتي إليك.</p>
-                    <p class="hero-description">اختر ما تحتاجه، وحدد موقعك ووقتك، ونحن نصل إليك لتوفير وقتك وجهدك.</p>
+                    <p class="hero-subtitle">غسيل سيارات متنقل</p>
+                    <p class="hero-description">نأتي إليك — في بيتك أو عملك.</p>
                     <div class="hero-actions">
-                        <a href="#packages-slider" class="btn btn-primary">ابدأ حجزك</a>
+                        <a href="#packages-slider" class="btn btn-primary hero-cta-primary">احجز غسيلك الآن</a>
+                        <a href="#before-after" class="btn btn-secondary hero-cta-secondary">شوف الفرق</a>
                     </div>
+                    <p class="hero-trust">حجز سريع عبر واتساب — نصلك في موقعك</p>
                 </div>
             </div>
         </section>
@@ -59,7 +62,7 @@
             <div class="container">
                 <div class="animated-message-box">
                     <div class="message-slide active">
-                        <span> غسلات والسادسة مجانًا — غسلات محسوبة وحقك مضمون</span>
+                        <span>٥ غسلات والسادسة مجانًا — غسلات محسوبة وحقك مضمون</span>
                     </div>
                     <div class="message-slide">
                         <span>تنسيق المواعيد والحجز عن طريق الواتساب</span>
@@ -72,28 +75,14 @@
         <section id="national-offer" class="section national-day-section">
             <div class="container">
                 <div class="national-day-card fade-in-up">
-                    <div class="national-day-badge"><span class="flag-icon">🇸</span><span>عرض دام عزك يا وطن</span></div>
-                    <div class="national-day-content">
-                        <div class="national-day-image-wrapper">
-                            <img src="images/packages/national-offer.jpg" alt="عرض اليوم الوطني" class="national-day-image" loading="lazy" onerror="this.style.display='none'">
-                            <div class="national-day-overlay">
-                                <div class="national-day-price-tag"><span class="price-number">96</span><span class="price-currency">ريال</span></div>
-                            </div>
-                        </div>
-                        <div class="national-day-details">
-                            <div class="national-day-header">
-                                <h2 class="national-day-title">اليوم الوطني السعودي 96</h2>
-                                <p class="national-day-slogan">نخدم وطننا .. ونعتني بسيارتك</p>
-                                <p class="national-day-sub-slogan">دام عزك يا وطن</p>
-                            </div>
-                            <div class="national-day-info">
-                                <div class="info-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg><span>4 غسلات</span></div>
-                                <div class="info-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>صلاحية شهر واحد</span></div>
-                                <div class="info-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>ينتهي العرض: <span id="countdown-date">25 سبتمبر</span></span></div>
-                            </div>
-                            <button onclick="openBooking('national-day')" class="btn btn-primary national-day-cta">احجز العرض</button>
-                        </div>
+                    <div class="national-day-badge">
+                        <span class="flag-icon">🇸🇦</span>
+                        <span>عرض دام عزك يا وطن</span>
                     </div>
+                    <div class="national-day-image-wrapper">
+                        <img src="images/packages/national-offer.jpg" alt="عرض اليوم الوطني" class="national-day-image" loading="lazy" onerror="this.parentElement.style.display='none'">
+                    </div>
+                    <button onclick="openBooking('national-day')" class="btn btn-primary national-day-cta">احجز العرض</button>
                 </div>
             </div>
         </section>
@@ -103,12 +92,10 @@
             <div class="container">
                 <div class="static-offer-card fade-in-up">
                     <div class="static-offer-image-wrapper">
-                        <img src="images/packages/8washes-banner.jpg" alt="عرض 8 غسلات" class="static-offer-image" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'static-offer-placeholder\'><h3>عرض 8 غسلات</h3><p>245 ريال بدلاً من 400 ريال</p></div>'">
+                        <img src="images/packages/8washes-banner.jpg" alt="عرض 8 غسلات" class="static-offer-image" loading="lazy">
                     </div>
                     <div class="static-offer-content">
                         <h2 class="static-offer-title">عرض 8 غسلات</h2>
-                        <div class="static-offer-pricing"><span class="current-price">245 ريال</span><span class="old-price">400 ريال</span></div>
-                        <p class="static-offer-desc">8 غسلات شاملة (داخلي وخارجي) بسعر مميز</p>
                         <button onclick="openBooking('8washes')" class="btn btn-primary">احجز العرض</button>
                     </div>
                 </div>
@@ -128,63 +115,43 @@
                     </button>
                     <div class="slider-viewport">
                         <div class="slider-track" id="slider-track">
-                            <!-- باقة 1 -->
                             <div class="package-slide" data-package="internal-external">
                                 <div class="slide-image-wrapper">
                                     <img src="images/packages/internal-external.jpg" alt="غسيل داخلي وخارجي" class="slide-image" loading="lazy">
-                                    <div class="slide-badge">⭐ 4.9 (7)</div>
                                 </div>
                                 <div class="slide-content">
-                                    <h3 class="slide-title">غسيل داخلي وخارجي</h3>
-                                    <div class="slide-pricing"><span class="current-price">35 ريال</span><span class="old-price">50 ريال</span></div>
                                     <button onclick="openPackageDetails('internal-external')" class="btn btn-secondary slide-details-btn">عرض التفاصيل</button>
                                 </div>
                             </div>
-                            <!-- باقة 2 -->
                             <div class="package-slide" data-package="gift">
                                 <div class="slide-image-wrapper">
                                     <img src="images/packages/gift.jpg" alt="غسيل هدية" class="slide-image" loading="lazy">
-                                    <div class="slide-badge gift-badge">🎁 هدية</div>
                                 </div>
                                 <div class="slide-content">
-                                    <h3 class="slide-title">غسيل هدية</h3>
-                                    <p class="slide-tagline">اهدي الغسلة لمن تحب</p>
-                                    <div class="slide-pricing"><span class="current-price">35 ريال</span><span class="old-price">50 ريال</span></div>
                                     <button onclick="openPackageDetails('gift')" class="btn btn-secondary slide-details-btn">عرض التفاصيل</button>
                                 </div>
                             </div>
-                            <!-- باقة 3 -->
                             <div class="package-slide" data-package="external">
                                 <div class="slide-image-wrapper">
                                     <img src="images/packages/external.jpg" alt="غسيل خارجي" class="slide-image" loading="lazy">
                                 </div>
                                 <div class="slide-content">
-                                    <h3 class="slide-title">غسيل خارجي فقط</h3>
-                                    <p class="slide-tagline">خلها نظيفة</p>
-                                    <div class="slide-pricing"><span class="current-price">31 ريال</span><span class="old-price">45 ريال</span></div>
                                     <button onclick="openPackageDetails('external')" class="btn btn-secondary slide-details-btn">عرض التفاصيل</button>
                                 </div>
                             </div>
-                            <!-- باقة 4 -->
                             <div class="package-slide" data-package="4washes">
                                 <div class="slide-image-wrapper">
                                     <img src="images/packages/4washes.jpg" alt="باقة 4 غسلات" class="slide-image" loading="lazy">
                                 </div>
                                 <div class="slide-content">
-                                    <h3 class="slide-title">باقة 4 غسلات</h3>
-                                    <p class="slide-tagline">المدة: شهران</p>
-                                    <div class="slide-pricing"><span class="current-price">132 ريال</span><span class="old-price">200 ريال</span></div>
                                     <button onclick="openPackageDetails('4washes')" class="btn btn-secondary slide-details-btn">عرض التفاصيل</button>
                                 </div>
                             </div>
-                            <!-- باقة 5 -->
                             <div class="package-slide" data-package="8washes">
                                 <div class="slide-image-wrapper">
                                     <img src="images/packages/8washes.jpg" alt="باقة 8 غسلات" class="slide-image" loading="lazy">
                                 </div>
                                 <div class="slide-content">
-                                    <h3 class="slide-title">عرض 8 غسلات</h3>
-                                    <div class="slide-pricing"><span class="current-price">245 ريال</span><span class="old-price">400 ريال</span></div>
                                     <button onclick="openPackageDetails('8washes')" class="btn btn-secondary slide-details-btn">عرض التفاصيل</button>
                                 </div>
                             </div>
@@ -204,7 +171,7 @@
             </div>
         </section>
 
-        <!-- Before/After - 3 أزواج (معدّل: landcruiser بدلاً من defender) -->
+        <!-- Before/After -->
         <section id="before-after" class="section before-after-section">
             <div class="container">
                 <div class="section-header fade-in-up">
@@ -212,18 +179,12 @@
                     <h2 class="section-title">شوف الفرق بنفسك</h2>
                     <p class="section-description">صور حقيقية من خدماتنا</p>
                 </div>
-
                 <div class="before-after-slider fade-in-up">
                     <button class="ba-slider-btn ba-prev" onclick="prevBeforeAfter()" aria-label="السابق">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <polyline points="9 18 15 12 9 6"/>
-                        </svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
                     </button>
-
                     <div class="ba-slider-viewport">
                         <div class="ba-slider-track" id="ba-slider-track">
-                            
-                            <!-- الزوج 1: Land Cruiser -->
                             <div class="ba-pair">
                                 <div class="before-after-wrapper" id="ba-wrapper-1">
                                     <div class="before-image-wrapper">
@@ -242,8 +203,6 @@
                                     <span class="ba-car-type">SUV</span>
                                 </div>
                             </div>
-
-                            <!-- الزوج 2: Hyundai Sonata -->
                             <div class="ba-pair">
                                 <div class="before-after-wrapper" id="ba-wrapper-2">
                                     <div class="before-image-wrapper">
@@ -262,8 +221,6 @@
                                     <span class="ba-car-type">سيدان</span>
                                 </div>
                             </div>
-
-                            <!-- الزوج 3: Nissan Navara -->
                             <div class="ba-pair">
                                 <div class="before-after-wrapper" id="ba-wrapper-3">
                                     <div class="before-image-wrapper">
@@ -282,30 +239,94 @@
                                     <span class="ba-car-type">بيك أب</span>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-
                     <button class="ba-slider-btn ba-next" onclick="nextBeforeAfter()" aria-label="التالي">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <polyline points="15 18 9 12 15 6"/>
-                        </svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
                     </button>
                 </div>
-
                 <div class="ba-slider-dots" id="ba-slider-dots">
                     <span class="ba-dot active" data-index="0" onclick="goToBeforeAfter(0)"></span>
                     <span class="ba-dot" data-index="1" onclick="goToBeforeAfter(1)"></span>
                     <span class="ba-dot" data-index="2" onclick="goToBeforeAfter(2)"></span>
                 </div>
-
-                <button onclick="openLightbox()" class="btn btn-secondary view-full">
-                    عرض الصورة كاملة
-                </button>
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <button onclick="openLightbox()" class="btn btn-secondary view-full">عرض الصورة كاملة</button>
+                </div>
             </div>
         </section>
 
-        <!-- الشاشة الزرقاء -->
+        <!-- الخدمات التكميلية -->
+        <section id="add-ons" class="section add-ons-section">
+            <div class="container">
+                <div class="section-header fade-in-up">
+                    <span class="section-label">إضافات اختيارية</span>
+                    <h2 class="section-title">الخدمات التكميلية</h2>
+                    <p class="section-description">خدمات إضافية لتحسين نتيجة الغسيل</p>
+                </div>
+                <div class="addons-grid">
+                    <div class="addon-card fade-in-up">
+                        <div class="addon-icon-placeholder">🧽</div>
+                        <h4 class="addon-title">تكييس دعاسات أمامية</h4>
+                        <span class="addon-price">+5 ريال</span>
+                    </div>
+                    <div class="addon-card fade-in-up">
+                        <div class="addon-icon-placeholder">️</div>
+                        <h4 class="addon-title">تكييس عصا القير والمساحات والدركسون</h4>
+                        <span class="addon-price">+5 ريال</span>
+                    </div>
+                    <div class="addon-card fade-in-up">
+                        <div class="addon-icon-placeholder">⚠️</div>
+                        <h4 class="addon-title">سيارة متسخة بشكل زائد</h4>
+                        <span class="addon-price">+5 ريال</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- آراء العملاء -->
+        <section id="reviews" class="section reviews-section">
+            <div class="container">
+                <div class="section-header fade-in-up">
+                    <span class="section-label">آراء العملاء</span>
+                    <h2 class="section-title">ماذا يقول عملاؤنا</h2>
+                </div>
+                <div class="reviews-grid">
+                    <div class="review-card fade-in-up">
+                        <div class="review-content">
+                            <p>"ماشاء الله الشغل طيب، بيض الله وجهك ماقصرتو"</p>
+                        </div>
+                        <div class="reviewer"><span class="reviewer-name">عميل</span></div>
+                    </div>
+                    <div class="review-card fade-in-up">
+                        <div class="review-content">
+                            <p>"الله يعطيكم العافية شغل ممتاز وماحصلت ورا العامل ايخطاء استمرو على الجودة هذي"</p>
+                        </div>
+                        <div class="reviewer"><span class="reviewer-name">عميل</span></div>
+                    </div>
+                    <div class="review-card fade-in-up">
+                        <div class="review-content">
+                            <p>"ما شاء الله معاملتك طيبه وفعاله"</p>
+                        </div>
+                        <div class="reviewer"><span class="reviewer-name">عميل</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الأسئلة الشائعة -->
+        <section id="faq" class="section faq-section">
+            <div class="container">
+                <div class="section-header fade-in-up">
+                    <span class="section-label">الأسئلة الشائعة</span>
+                    <h2 class="section-title">لديك سؤال؟</h2>
+                    <p class="section-description">إليك إجابات لأكثر الأسئلة شيوعًا</p>
+                </div>
+                <div class="faq-container" id="faq-container"></div>
+            </div>
+        </section>
+
+        <!-- الشاشة الختامية -->
         <section class="brand-moment-section">
             <div class="container">
                 <div class="brand-moment-content fade-in-up">
@@ -322,9 +343,19 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <img src="logo.png" alt="UNLIMITED SHINE" class="footer-logo">
+                    <div class="footer-logo-wrapper">
+                        <img src="logo.png" alt="UNLIMITED SHINE" class="footer-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="logo-text-fallback" style="display: none;">UNLIMITED SHINE</div>
+                    </div>
                     <p>غسيل سيارات متنقل يوفر وقتك وجهدك</p>
-                    <p class="cr-number">🇦 السجل التجاري: 7049237196</p>
+                    <p class="cr-number">🇸 السجل التجاري: 7049237196</p>
+                </div>
+                <div class="footer-designer">
+                    <h3>تصميم وتطوير</h3>
+                    <div class="designer-kj-badge">KJ</div>
+                    <p class="designer-name">خالد الجراش</p>
+                    <a href="tel:779184839" class="designer-phone">779184839</a>
+                    <p class="designer-title">مصمم مواقع وحلول رقمية</p>
                 </div>
                 <div class="footer-payment">
                     <h3>وسائل الدفع</h3>
@@ -408,8 +439,8 @@
                 <div class="booking-step" data-step="2">
                     <h3>حدد حجم سيارتك</h3>
                     <div class="car-size-options">
-                        <div class="size-card" data-size="small" data-diff="0" onclick="selectCarSize(this)"><div class="size-icon">🚗</div><div class="size-title">صغيرة — سيدان</div></div>
-                        <div class="size-card" data-size="medium" data-diff="20" onclick="selectCarSize(this)"><div class="size-icon"></div><div class="size-title">وسط — جيب 5 مقاعد</div><div class="size-price">+20 ريال</div></div>
+                        <div class="size-card" data-size="small" data-diff="0" onclick="selectCarSize(this)"><div class="size-icon"></div><div class="size-title">صغيرة — سيدان</div></div>
+                        <div class="size-card" data-size="medium" data-diff="20" onclick="selectCarSize(this)"><div class="size-icon">🚐</div><div class="size-title">وسط — جيب 5 مقاعد</div><div class="size-price">+20 ريال</div></div>
                         <div class="size-card" data-size="large" data-diff="40" onclick="selectCarSize(this)"><div class="size-icon">🚙</div><div class="size-title">كبيرة — جيب 7 مقاعد</div><div class="size-price">+40 ريال</div></div>
                     </div>
                 </div>
@@ -422,7 +453,7 @@
                     <h3>اختر الفترة المناسبة</h3>
                     <p class="period-note">التوقيت الدقيق يتم تأكيده عبر واتساب</p>
                     <div class="period-options">
-                        <div class="period-card" data-period="morning" onclick="selectPeriod(this)"><div class="period-icon"></div><div class="period-title">صباحًا</div></div>
+                        <div class="period-card" data-period="morning" onclick="selectPeriod(this)"><div class="period-icon">🌅</div><div class="period-title">صباحًا</div></div>
                         <div class="period-card" data-period="noon" onclick="selectPeriod(this)"><div class="period-icon">☀️</div><div class="period-title">ظهرًا</div></div>
                         <div class="period-card" data-period="evening" onclick="selectPeriod(this)"><div class="period-icon"></div><div class="period-title">مساءً</div></div>
                     </div>
@@ -445,13 +476,8 @@
                         <div class="summary-item"><span class="summary-label">الإضافات:</span><span class="summary-value" id="summary-addons">-</span></div>
                         <div class="summary-total"><span>سعر هذا العنصر</span><span class="total-price" id="summary-total-price">0 ريال</span></div>
                     </div>
-                    
-                    <button onclick="addToCartFromBooking()" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">
-                        إضافة إلى السلة 🛒
-                    </button>
-                    <p style="text-align: center; font-size: 0.875rem; color: var(--color-text-secondary);">
-                        يمكنك إضافة المزيد من الباقات ثم مراجعة السلة وإرسال الطلب مرة واحدة.
-                    </p>
+                    <button onclick="addToCartFromBooking()" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">إضافة إلى السلة 🛒</button>
+                    <p style="text-align: center; font-size: 0.875rem; color: var(--color-text-secondary);">يمكنك إضافة المزيد من الباقات ثم مراجعة السلة وإرسال الطلب مرة واحدة.</p>
                 </div>
             </div>
             <div class="booking-navigation">
@@ -467,6 +493,6 @@
         <div class="lightbox-content"><img src="" alt="" id="lightbox-img"></div>
     </div>
 
-    <script src="script.js?v=8"></script>
+    <script src="script.js?v=10"></script>
 </body>
 </html>
