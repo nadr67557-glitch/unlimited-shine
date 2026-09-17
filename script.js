@@ -1,5 +1,5 @@
 /**
- * UNLIMITED SHINE - Core Logic v7
+ * UNLIMITED SHINE - Core Logic v12
  * Vanilla JavaScript - No Frameworks
  */
 
@@ -390,7 +390,6 @@ function initPackageSlider() {
     const viewport = document.querySelector('.slider-viewport');
     if (!track || !viewport) return;
     
-    // Touch events
     viewport.addEventListener('touchstart', (e) => {
         sliderState.isDragging = true;
         sliderState.startX = e.touches[0].clientX;
@@ -409,7 +408,6 @@ function initPackageSlider() {
         }
     });
     
-    // Mouse drag (Desktop)
     viewport.addEventListener('mousedown', (e) => {
         sliderState.isDragging = true;
         sliderState.startX = e.clientX;
@@ -473,15 +471,15 @@ function updateSliderPosition() {
 }
 
 // ==========================================
-// 12. Before/After Slider - 3 أزواج
+// 12. Before/After Slider — الإصلاح النهائي
 // ==========================================
 function initBeforeAfterSlider() {
-    // تهيئة السحب لكل زوج
+    // 1. تهيئة السحب الداخلي لكل زوج (المقارنة قبل/بعد)
     for (let i = 1; i <= 3; i++) {
         initSingleBeforeAfter(i);
     }
     
-    // تهيئة سلايدر التنقل بين الأزواج
+    // 2. تهيئة سلايدر التنقل الخارجي بين الأزواج
     const viewport = document.querySelector('.ba-slider-viewport');
     if (!viewport) return;
     
@@ -493,15 +491,10 @@ function initBeforeAfterSlider() {
     viewport.addEventListener('touchend', (e) => {
         if (!baSliderState.isDragging) return;
         baSliderState.isDragging = false;
-        const endX = e.changedTouches[0].clientX;
-        const diff = baSliderState.startX - endX;
-        
-        if (diff > 50) {
-            nextBeforeAfter();
-        } else if (diff < -50) {
-            prevBeforeAfter();
-        }
-    });
+        const diff = baSliderState.startX - e.changedTouches[0].clientX;
+        if (diff > 50) nextBeforeAfter();
+        else if (diff < -50) prevBeforeAfter();
+    }, { passive: true });
     
     viewport.addEventListener('mousedown', (e) => {
         baSliderState.isDragging = true;
@@ -513,15 +506,13 @@ function initBeforeAfterSlider() {
         if (!baSliderState.isDragging) return;
         baSliderState.isDragging = false;
         viewport.style.cursor = '';
-        const endX = e.clientX;
-        const diff = baSliderState.startX - endX;
-        
-        if (diff > 50) {
-            nextBeforeAfter();
-        } else if (diff < -50) {
-            prevBeforeAfter();
-        }
+        const diff = baSliderState.startX - e.clientX;
+        if (diff > 50) nextBeforeAfter();
+        else if (diff < -50) prevBeforeAfter();
     });
+    
+    // تهيئة الموضع الأولي
+    updateBeforeAfterPosition();
 }
 
 function initSingleBeforeAfter(index) {
@@ -542,32 +533,30 @@ function initSingleBeforeAfter(index) {
         handle.style.left = `${pos}%`;
     };
     
-    wrapper.addEventListener('mousedown', (e) => { 
+    // منع تعارض السحب الداخلي مع الخارجي
+    const startDrag = (e) => { 
         isDragging = true; 
-        updateSlider(e.clientX); 
+        updateSlider(e.type.includes('touch') ? e.touches[0].clientX : e.clientX); 
+        e.stopPropagation(); 
         e.preventDefault();
-    });
+    };
     
-    window.addEventListener('mousemove', (e) => { 
-        if (isDragging) { 
-            updateSlider(e.clientX); 
-        } 
-    });
+    const moveDrag = (e) => { 
+        if (!isDragging) return; 
+        updateSlider(e.type.includes('touch') ? e.touches[0].clientX : e.clientX); 
+        e.stopPropagation();
+        e.preventDefault();
+    };
     
-    window.addEventListener('mouseup', () => { isDragging = false; });
+    const endDrag = () => { isDragging = false; };
+
+    wrapper.addEventListener('mousedown', startDrag);
+    window.addEventListener('mousemove', moveDrag);
+    window.addEventListener('mouseup', endDrag);
     
-    wrapper.addEventListener('touchstart', (e) => { 
-        isDragging = true; 
-        updateSlider(e.touches[0].clientX); 
-    }, { passive: true });
-    
-    wrapper.addEventListener('touchmove', (e) => { 
-        if (isDragging) { 
-            updateSlider(e.touches[0].clientX); 
-        } 
-    }, { passive: true });
-    
-    wrapper.addEventListener('touchend', () => { isDragging = false; });
+    wrapper.addEventListener('touchstart', startDrag, { passive: false });
+    wrapper.addEventListener('touchmove', moveDrag, { passive: false });
+    wrapper.addEventListener('touchend', endDrag);
 }
 
 function nextBeforeAfter() {
@@ -595,7 +584,10 @@ function updateBeforeAfterPosition() {
     const track = document.getElementById('ba-slider-track');
     if (!track) return;
     
-    const offset = baSliderState.currentIndex * 100;
+    // الإصلاح الجذري:
+    // في RTL، للتحرك نحو العناصر التالية (Sonata, Navara)
+    // يجب تحريك الـtrack لليسار بقيمة سالبة
+    const offset = baSliderState.currentIndex * 33.333;
     track.style.transform = `translateX(-${offset}%)`;
     
     document.querySelectorAll('.ba-slider-dots .ba-dot').forEach((dot, i) => {
