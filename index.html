@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="preload" as="image" href="images/packages/hero-bg.jpg" fetchpriority="high">
-    <link rel="stylesheet" href="style.css?v=18">
+    <link rel="stylesheet" href="style.css?v=20">
 </head>
 <body>
 
@@ -17,7 +17,8 @@
     <header class="main-header" id="main-header">
         <div class="container header-content">
             <a href="#" class="logo" aria-label="العودة للرئيسية">
-                <img src="logo.png" alt="UNLIMITED SHINE" class="official-logo">
+                <img src="images/logo.png" alt="UNLIMITED SHINE" class="official-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <span class="logo-text-fallback" style="display: none;">UNLIMITED SHINE</span>
             </a>
             <nav class="desktop-nav" aria-label="التنقل الرئيسي">
                 <ul class="nav-links">
@@ -363,7 +364,7 @@
             </div>
         </section>
 
-        <!-- آراء العملاء - بيانات حقيقية من المتجر القديم -->
+        <!-- آراء العملاء -->
         <section id="reviews" class="section reviews-section">
             <div class="container">
                 <div class="section-header fade-in-up">
@@ -425,7 +426,7 @@
         <div class="container">
             <div class="footer-brand-block">
                 <div class="footer-logo-wrapper">
-                    <img src="logo.png" alt="UNLIMITED SHINE" class="footer-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="images/logo.png" alt="UNLIMITED SHINE" class="footer-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="logo-text-fallback" style="display: none;">UNLIMITED SHINE</div>
                 </div>
                 <p class="footer-desc">غسيل سيارات متنقل يوفر وقتك وجهدك</p>
@@ -590,6 +591,6 @@
         <div class="lightbox-content"><img src="" alt="" id="lightbox-img"></div>
     </div>
 
-    <script src="script.js?v=18"></script>
+    <script src="script.js?v=20"></script>
 </body>
 </html>
