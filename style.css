@@ -1,6 +1,5 @@
 /* =========================================
-   UNLIMITED SHINE - Global Styles v18
-   Final Document Implementation
+   UNLIMITED SHINE - Global Styles v19
    ========================================= */
 
 :root {
@@ -300,7 +299,7 @@ img {
 }
 
 /* ============================================
-   Hero Section - صورة جديدة نظيفة
+   Hero Section
    ============================================ */
 
 .hero-section {
@@ -323,7 +322,6 @@ img {
   animation: heroBgFade 1s ease-out;
 }
 
-/* تخفيف التدرج الداكن (7د) */
 .hero-bg::after {
   content: '';
   position: absolute;
@@ -388,7 +386,6 @@ img {
   opacity: 0;
 }
 
-/* Hero Prices Bar */
 .hero-prices {
   display: flex;
   flex-wrap: wrap;
@@ -563,10 +560,6 @@ img {
   .hero-text-wrapper {
     max-width: 720px;
   }
-  
-  .hero-bg {
-    background-position: center center;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -703,7 +696,7 @@ img {
 }
 
 /* ============================================
-   العرض الوطني - سطر مضغوط + عمودي/أفقي
+   العرض الوطني
    ============================================ */
 
 .national-day-section {
@@ -727,7 +720,6 @@ img {
   margin: 0;
 }
 
-/* السطر المضغوط: عداد + زر جنبًا إلى جنب */
 .national-top-row {
   display: flex;
   justify-content: space-between;
@@ -760,7 +752,6 @@ img {
   min-height: 44px;
 }
 
-/* إطار الصورة مع <picture> للجوال/الكمبيوتر */
 .national-day-image-wrapper {
   position: relative;
   border-radius: 18px;
@@ -832,7 +823,7 @@ img {
 }
 
 /* ============================================
-   سلايدر الباقات - Peek 92% + Blur-Fill + أسهم داخلية
+   سلايدر الباقات
    ============================================ */
 
 .packages-slider-section {
@@ -847,7 +838,6 @@ img {
   gap: 0.5rem;
 }
 
-/* إخفاء الأسهم الخارجية على الجوال (ستكون داخل البطاقة) */
 .slider-btn {
   display: none;
   width: 44px;
@@ -890,7 +880,6 @@ img {
   gap: 12px;
 }
 
-/* البطاقة الرئيسية = 92% على الجوال (Peek خفيف) */
 .package-slide {
   flex: 0 0 92%;
   background-color: var(--color-bg-secondary);
@@ -900,7 +889,6 @@ img {
   transition: var(--transition-smooth);
 }
 
-/* إطار الصورة - مربع مع Blur-Fill */
 .slide-image-wrapper {
   position: relative;
   aspect-ratio: 1 / 1;
@@ -908,7 +896,6 @@ img {
   background-color: var(--color-bg-tertiary);
 }
 
-/* الخلفية الضبابية (نسخة مكبّرة من نفس الصورة) */
 .slide-image-blur {
   position: absolute;
   inset: 0;
@@ -920,7 +907,6 @@ img {
   z-index: 0;
 }
 
-/* الصورة الأصلية - كاملة بدون قص */
 .slide-image {
   position: relative;
   width: 100%;
@@ -935,7 +921,6 @@ img {
   transform: scale(1.03);
 }
 
-/* الأسهم الداخلية على حواف الصورة (جوال) */
 .slide-image-wrapper::before,
 .slide-image-wrapper::after {
   content: '';
@@ -950,13 +935,11 @@ img {
   border: 1px solid var(--glass-border);
   z-index: 5;
   pointer-events: none;
-  opacity: 1;
   transition: opacity 0.3s ease;
 }
 
 .slide-image-wrapper::before {
   right: 12px;
-  /* سهم يمين (السابق في RTL) */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5'%3E%3Cpolyline points='15 18 9 12 15 6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
@@ -965,14 +948,12 @@ img {
 
 .slide-image-wrapper::after {
   left: 12px;
-  /* سهم يسار (التالي في RTL) */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 22px;
 }
 
-/* إخفاء الأسهم الداخلية على الكمبيوتر (لأن الأسهم الخارجية ظاهرة) */
 @media (min-width: 768px) {
   .slide-image-wrapper::before,
   .slide-image-wrapper::after {
@@ -992,7 +973,6 @@ img {
   margin-bottom: 0.5rem;
 }
 
-/* صف أفقي للأزرار */
 .slide-buttons {
   display: flex;
   flex-direction: row;
@@ -1005,11 +985,6 @@ img {
   padding: 0.7rem 0.5rem;
   font-size: 0.875rem;
   min-height: 44px;
-}
-
-.slide-details-btn {
-  padding: 0.7rem 0.5rem;
-  font-size: 0.875rem;
 }
 
 .slider-dots {
@@ -1053,7 +1028,7 @@ img {
 }
 
 /* ============================================
-   Before/After - Full-Bleed + شرائح + نسبة 4:3
+   Before/After - أسهم زجاجية حقيقية فوق الصورة
    ============================================ */
 
 .before-after-section {
@@ -1071,9 +1046,11 @@ img {
   padding: 0 12px;
 }
 
-/* الأسهم داخل viewport (زجاجية داكنة) */
+/* السهم: زر حقيقي مطلق فوق حافة الصورة (جوال + كمبيوتر) */
 .ba-slider-btn {
-  display: none;
+  position: absolute;
+  top: calc(50% - 24px);
+  z-index: 20;
   width: 48px;
   height: 48px;
   min-width: 48px;
@@ -1083,11 +1060,11 @@ img {
   border: 1px solid var(--glass-border);
   color: var(--color-text-primary);
   cursor: pointer;
+  display: flex;
   align-items: center;
   justify-content: center;
   transition: var(--transition-smooth);
   flex-shrink: 0;
-  z-index: 10;
 }
 
 .ba-slider-btn:hover {
@@ -1095,13 +1072,31 @@ img {
   border-color: var(--color-primary);
 }
 
-@media (min-width: 768px) {
+.ba-prev {
+  right: 20px;
+}
+
+.ba-next {
+  left: 20px;
+}
+
+@media (max-width: 767px) {
   .ba-slider-btn {
-    display: flex;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    top: calc(50% - 22px);
+  }
+  
+  .ba-prev {
+    right: 16px;
+  }
+  
+  .ba-next {
+    left: 16px;
   }
 }
 
-/* Full-Bleed viewport - بدون min-height (3ج) */
 .ba-slider-viewport {
   flex: 1;
   overflow: hidden;
@@ -1203,7 +1198,6 @@ img {
   border: 2px solid rgba(255, 255, 255, 0.25);
 }
 
-/* شرائح الاسم/النوع فوق الصورة (3أ) */
 .ba-chip {
   position: absolute;
   z-index: 8;
@@ -1263,7 +1257,7 @@ img {
 }
 
 /* ============================================
-   الخدمات التكميلية - صور حقيقية + زر رفيق
+   الخدمات التكميلية
    ============================================ */
 
 .add-ons-section {
@@ -1291,7 +1285,6 @@ img {
   transform: translateY(-2px);
 }
 
-/* إطار الصورة 4:3 */
 .addon-image-wrapper {
   aspect-ratio: 4 / 3;
   overflow: hidden;
@@ -1311,7 +1304,6 @@ img {
   transform: scale(1.05);
 }
 
-/* صف: اسم + سعر */
 .addon-row {
   display: flex;
   justify-content: space-between;
@@ -1338,15 +1330,8 @@ img {
   white-space: nowrap;
 }
 
-/* زر رفيق بعرض البطاقة */
 .addon-add-btn {
   display: block;
-  width: 100%;
-  padding: 0.85rem;
-  margin: 0.85rem 0 1rem;
-  width: calc(100% - 2rem);
-  margin-left: 1rem;
-  margin-right: 1rem;
   width: calc(100% - 2rem);
   margin: 0.85rem 1rem 1rem 1rem;
   background-color: transparent;
@@ -1382,7 +1367,7 @@ img {
 }
 
 /* ============================================
-   آراء العملاء - كاروسيل + نجوم برتقالية
+   آراء العملاء
    ============================================ */
 
 .reviews-section {
@@ -1440,7 +1425,7 @@ img {
 }
 
 /* ============================================
-   FAQ - Accordion
+   FAQ
    ============================================ */
 
 .faq-section {
@@ -1563,7 +1548,6 @@ img {
   gap: 2rem;
 }
 
-/* بلوك العلامة */
 .footer-brand-block {
   text-align: center;
 }
@@ -1594,7 +1578,6 @@ img {
   margin-bottom: 1rem;
 }
 
-/* بطاقة السجل التجاري الذهبية */
 .footer-cr-card {
   display: inline-flex;
   align-items: center;
@@ -1608,7 +1591,6 @@ img {
   font-weight: 600;
 }
 
-/* العناوين الذهبية */
 .footer-gold-title {
   color: var(--color-gold);
   font-size: 0.8rem;
@@ -1619,7 +1601,6 @@ img {
   text-align: center;
 }
 
-/* بلوك التواصل */
 .footer-contact-block {
   text-align: center;
 }
@@ -1655,7 +1636,6 @@ img {
   color: #25D366;
 }
 
-/* بلوك الروابط المهمة */
 .footer-links-block {
   text-align: center;
 }
@@ -1684,7 +1664,6 @@ img {
   color: var(--color-gold);
 }
 
-/* بلوك الدفع */
 .footer-payments-block {
   text-align: center;
 }
@@ -1721,7 +1700,6 @@ img {
   display: block;
 }
 
-/* فاصل + توقيع المصمم المضغوط */
 .footer-signature {
   grid-column: 1 / -1;
   display: flex;
@@ -1782,13 +1760,6 @@ img {
   .main-footer .container {
     grid-template-columns: repeat(2, 1fr);
     gap: 2.5rem;
-  }
-  
-  .footer-brand-block,
-  .footer-contact-block,
-  .footer-links-block,
-  .footer-payments-block {
-    text-align: center;
   }
 }
 
