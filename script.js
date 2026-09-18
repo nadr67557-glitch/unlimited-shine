@@ -1,5 +1,5 @@
 /**
- * UNLIMITED SHINE - Core Logic v17
+ * UNLIMITED SHINE - Core Logic v18
  * Vanilla JavaScript - No Frameworks
  */
 
@@ -537,7 +537,6 @@ function initSingleBeforeAfter(index) {
         handle.style.left = `${pos}%`;
     };
 
-    // Mouse: مقارنة في أي مكان داخل الصورة
     wrapper.addEventListener('mousedown', (e) => {
         dragging = true;
         axis = 'x';
@@ -555,7 +554,6 @@ function initSingleBeforeAfter(index) {
         axis = null;
     });
 
-    // Touch: قفل المحور - أفقي = مقارنة، عمودي = تمرير الصفحة
     wrapper.addEventListener('touchstart', (e) => {
         dragging = true;
         axis = null;
@@ -621,7 +619,6 @@ function updateBeforeAfterPosition() {
 
     let shift = 0;
     if (pairs.length > 1) {
-        // المسافة بين زوجين متتاليين (سالبة في RTL) - مستقل عن الاتجاه الحالي
         const step = pairs[1].getBoundingClientRect().left - pairs[0].getBoundingClientRect().left;
         shift = -baSliderState.currentIndex * step;
     }
@@ -637,14 +634,17 @@ function openLightbox() {
     const currentIndex = baSliderState.currentIndex;
     const afterImg = document.querySelector(`#ba-wrapper-${currentIndex + 1} .after-image`);
     if (afterImg) {
-        const img = document.getElementById('lightbox-img');
-        if (img) {
-            img.src = afterImg.src;
-            img.alt = afterImg.alt;
-        }
-        document.getElementById('lightbox').classList.add('active');
-        document.body.style.overflow = 'hidden';
+        openImageLightbox(afterImg.src, afterImg.alt);
     }
+}
+
+function openImageLightbox(src, alt) {
+    const img = document.getElementById('lightbox-img');
+    if (!img || !src) return;
+    img.src = src;
+    img.alt = alt || '';
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
 }
 
 function closeLightbox() {
@@ -902,7 +902,7 @@ function proceedToBooking() {
 }
 
 // ==========================================
-// 16. إضافة مباشرة للسلة من البطاقة
+// 16. إضافة مباشرة للسلة (باقات + خدمات تكميلية)
 // ==========================================
 function quickAddToCart(packageId) {
     const pkg = PACKAGES_DATA[packageId];
@@ -921,6 +921,28 @@ function quickAddToCart(packageId) {
         addonsPrice: 0,
         totalWashes: pkg.totalWashes || 1,
         totalPrice: pkg.currentPrice
+    };
+
+    cart.items.push(newItem);
+    saveCartToLocalStorage();
+    updateCartUI();
+    showToast('تمت الإضافة إلى السلة ✓');
+}
+
+function addAddonToCart(addonId, addonName, addonPrice) {
+    const newItem = {
+        id: Date.now().toString(),
+        packageId: addonId,
+        packageName: addonName,
+        carSize: null,
+        carSizeName: 'لا ينطبق',
+        carSizeDiff: 0,
+        neighborhood: 'يُؤكد عبر الواتساب',
+        period: '',
+        addons: [],
+        addonsPrice: 0,
+        totalWashes: 1,
+        totalPrice: addonPrice
     };
 
     cart.items.push(newItem);
