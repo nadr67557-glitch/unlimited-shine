@@ -111,13 +111,6 @@
         <section id="national-offer" class="section national-day-section">
             <div class="container">
                 <div class="national-day-card fade-in-up">
-                    <div class="national-top-row">
-                        <div class="national-countdown">
-                            <span class="countdown-box" id="countdown-days"></span>
-                            <span class="countdown-label">ينتهي 25 سبتمبر</span>
-                        </div>
-                        <button onclick="openBooking('national-day')" class="btn btn-primary national-day-cta">احجز العرض ←</button>
-                    </div>
                     <div class="national-info">
                         <div class="national-info-head">
                             <h3 class="national-info-title">عرض اليوم الوطني السعودي 96</h3>
@@ -130,6 +123,13 @@
                             <span class="national-feature">في الوقت المناسب</span>
                             <span class="national-feature">خدمة منزلية</span>
                         </div>
+                    </div>
+                    <div class="national-top-row">
+                        <div class="national-countdown">
+                            <span class="countdown-box" id="countdown-days"></span>
+                            <span class="countdown-label">ينتهي 25 سبتمبر</span>
+                        </div>
+                        <button onclick="openBooking('national-day')" class="btn btn-primary national-day-cta">احجز العرض ←</button>
                     </div>
                     <div class="national-day-image-wrapper">
                         <picture>
@@ -275,8 +275,6 @@
                                         <div class="handle-line"></div>
                                         <div class="handle-arrows"><span>‹</span><span>›</span></div>
                                     </div>
-                                    <span class="ba-chip ba-chip-name">Land Cruiser</span>
-                                    <span class="ba-chip ba-chip-type">SUV</span>
                                 </div>
                             </div>
 
@@ -292,8 +290,6 @@
                                         <div class="handle-line"></div>
                                         <div class="handle-arrows"><span>‹</span><span>›</span></div>
                                     </div>
-                                    <span class="ba-chip ba-chip-name">Hyundai Sonata</span>
-                                    <span class="ba-chip ba-chip-type">سيدان</span>
                                 </div>
                             </div>
 
@@ -309,8 +305,6 @@
                                         <div class="handle-line"></div>
                                         <div class="handle-arrows"><span>‹</span><span>›</span></div>
                                     </div>
-                                    <span class="ba-chip ba-chip-name">Nissan Navara</span>
-                                    <span class="ba-chip ba-chip-type">بيك أب</span>
                                 </div>
                             </div>
                         </div>
@@ -331,6 +325,49 @@
 
                 <div style="text-align: center; margin-top: 1.5rem;">
                     <button onclick="openLightbox()" class="btn btn-secondary view-full">فتح المقارنة بالحجم الكامل</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- الخدمات التكميلية -->
+        <section id="add-ons" class="section add-ons-section">
+            <div class="container">
+                <div class="section-header fade-in-up">
+                    <span class="section-label">إضافات اختيارية</span>
+                    <h2 class="section-title">الخدمات التكميلية</h2>
+                    <p class="section-description">خدمات إضافية لتحسين نتيجة الغسيل</p>
+                </div>
+                <div class="addons-grid">
+                    <div class="addon-card fade-in-up">
+                        <div class="addon-image-wrapper">
+                            <img src="images/addons/mats.jpg" alt="تكييس دعاسات أمامية" class="addon-image" loading="lazy">
+                        </div>
+                        <div class="addon-row">
+                            <h4 class="addon-title">تكييس دعاسات أمامية</h4>
+                            <span class="addon-price">+5 ريال</span>
+                        </div>
+                        <button type="button" class="addon-add-btn" onclick="addAddonToCart('addon-mats', 'تكييس دعاسات أمامية', 5)">أضف للسلة 🛒</button>
+                    </div>
+                    <div class="addon-card fade-in-up">
+                        <div class="addon-image-wrapper">
+                            <img src="images/addons/steering.jpg" alt="تكييس عصا القير والمساحات والدركسون" class="addon-image" loading="lazy">
+                        </div>
+                        <div class="addon-row">
+                            <h4 class="addon-title">تكييس عصا القير والمساحات والدركسون</h4>
+                            <span class="addon-price">+5 ريال</span>
+                        </div>
+                        <button type="button" class="addon-add-btn" onclick="addAddonToCart('addon-steering', 'تكييس عصا القير والمساحات والدركسون', 5)">أضف للسلة 🛒</button>
+                    </div>
+                    <div class="addon-card fade-in-up">
+                        <div class="addon-image-wrapper">
+                            <img src="images/addons/dirty-car.jpg" alt="سيارة متسخة بشكل زائد" class="addon-image" loading="lazy">
+                        </div>
+                        <div class="addon-row">
+                            <h4 class="addon-title">سيارة متسخة بشكل زائد</h4>
+                            <span class="addon-price">+5 ريال</span>
+                        </div>
+                        <button type="button" class="addon-add-btn" onclick="addAddonToCart('addon-dirty', 'سيارة متسخة بشكل زائد', 5)">أضف للسلة 🛒</button>
+                    </div>
                 </div>
             </div>
         </section>
