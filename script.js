@@ -1,5 +1,5 @@
 /**
- * UNLIMITED SHINE - Core Logic v18
+ * UNLIMITED SHINE - Core Logic v21
  * Vanilla JavaScript - No Frameworks
  */
 
@@ -293,6 +293,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// إخفاء قسم وسائل الدفع بالكامل إذا لم توجد أي صورة دفع صالحة
+window.addEventListener('load', () => {
+    const block = document.querySelector('.footer-payments-block');
+    if (!block) return;
+    const cards = block.querySelectorAll('.payment-card');
+    if (cards.length === 0) {
+        block.style.display = 'none';
+        return;
+    }
+    const anyVisible = Array.from(cards).some(c => c.style.display !== 'none');
+    if (!anyVisible) block.style.display = 'none';
+});
+
 // ==========================================
 // 8. تأثيرات الحركة والتمرير
 // ==========================================
@@ -367,20 +380,16 @@ function checkAndSwitchOffer() {
 }
 
 function updateCountdown(remainingMs) {
-    const el = document.getElementById('countdown-date');
-    if (!el) return;
+    const daysEl = document.getElementById('countdown-days');
+    if (!daysEl) return;
 
     if (remainingMs <= 0) {
-        el.textContent = 'انتهى';
+        daysEl.textContent = 'انتهى';
         return;
     }
 
     const days = Math.ceil(remainingMs / 86400000);
-    if (days <= 1) {
-        el.textContent = 'آخر يوم';
-    } else {
-        el.textContent = 'تبقى ' + days + ' أيام';
-    }
+    daysEl.textContent = days <= 1 ? 'آخر يوم' : String(days);
 }
 
 // ==========================================
@@ -472,7 +481,7 @@ function updateSliderPosition() {
 }
 
 // ==========================================
-// 12. Before/After Slider - حل بكسل مستقل عن الاتجاه
+// 12. Before/After Slider
 // ==========================================
 function initBeforeAfterSlider() {
     for (let i = 1; i <= 3; i++) {
