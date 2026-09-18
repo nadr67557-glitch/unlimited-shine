@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="preload" as="image" href="images/packages/hero-bg.jpg" fetchpriority="high">
-    <link rel="stylesheet" href="style.css?v=20">
+    <link rel="stylesheet" href="style.css?v=21">
 </head>
 <body>
 
@@ -17,7 +17,7 @@
     <header class="main-header" id="main-header">
         <div class="container header-content">
             <a href="#" class="logo" aria-label="العودة للرئيسية">
-                <img src="images/logo.png" alt="UNLIMITED SHINE" class="official-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <img src="images/logo-4.png" alt="UNLIMITED SHINE" class="official-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <span class="logo-text-fallback" style="display: none;">UNLIMITED SHINE</span>
             </a>
             <nav class="desktop-nav" aria-label="التنقل الرئيسي">
@@ -112,8 +112,24 @@
             <div class="container">
                 <div class="national-day-card fade-in-up">
                     <div class="national-top-row">
-                        <div class="national-countdown">⏳ <span id="countdown-date"></span></div>
+                        <div class="national-countdown">
+                            <span class="countdown-box" id="countdown-days"></span>
+                            <span class="countdown-label">ينتهي 25 سبتمبر</span>
+                        </div>
                         <button onclick="openBooking('national-day')" class="btn btn-primary national-day-cta">احجز العرض ←</button>
+                    </div>
+                    <div class="national-info">
+                        <div class="national-info-head">
+                            <h3 class="national-info-title">عرض اليوم الوطني السعودي 96</h3>
+                            <span class="national-price-now">96 ريال</span>
+                        </div>
+                        <div class="national-info-features">
+                            <span class="national-feature">4 غسلات</span>
+                            <span class="national-feature">عناية تليق بسيارتك</span>
+                            <span class="national-feature">منظفات آمنة</span>
+                            <span class="national-feature">في الوقت المناسب</span>
+                            <span class="national-feature">خدمة منزلية</span>
+                        </div>
                     </div>
                     <div class="national-day-image-wrapper">
                         <picture>
@@ -159,7 +175,6 @@
                                     <img src="images/packages/internal-external.jpg" alt="غسيل داخلي وخارجي" class="slide-image" loading="lazy">
                                 </div>
                                 <div class="slide-content">
-                                    <div class="slide-rating">⭐ 5 (7)</div>
                                     <div class="slide-buttons">
                                         <button onclick="quickAddToCart('internal-external')" class="btn btn-primary slide-add-btn">أضف للسلة</button>
                                         <button onclick="openPackageDetails('internal-external')" class="btn btn-secondary slide-details-btn">التفاصيل</button>
@@ -196,7 +211,6 @@
                                     <img src="images/packages/4washes.jpg" alt="باقة 4 غسلات" class="slide-image" loading="lazy">
                                 </div>
                                 <div class="slide-content">
-                                    <div class="slide-rating">⭐ 5 (1)</div>
                                     <div class="slide-buttons">
                                         <button onclick="quickAddToCart('4washes')" class="btn btn-primary slide-add-btn">أضف للسلة</button>
                                         <button onclick="openPackageDetails('4washes')" class="btn btn-secondary slide-details-btn">التفاصيل</button>
@@ -316,49 +330,25 @@
                 </div>
 
                 <div style="text-align: center; margin-top: 1.5rem;">
-                    <button onclick="openLightbox()" class="btn btn-secondary view-full">عرض الصورة كاملة</button>
+                    <button onclick="openLightbox()" class="btn btn-secondary view-full">فتح المقارنة بالحجم الكامل</button>
                 </div>
             </div>
         </section>
 
-        <!-- الخدمات التكميلية -->
-        <section id="add-ons" class="section add-ons-section">
+        <!-- فريقنا يصلك -->
+        <section id="team" class="section team-section">
             <div class="container">
                 <div class="section-header fade-in-up">
-                    <span class="section-label">إضافات اختيارية</span>
-                    <h2 class="section-title">الخدمات التكميلية</h2>
-                    <p class="section-description">خدمات إضافية لتحسين نتيجة الغسيل</p>
+                    <h2 class="section-title">فريقنا يصلك</h2>
                 </div>
-                <div class="addons-grid">
-                    <div class="addon-card fade-in-up">
-                        <div class="addon-image-wrapper">
-                            <img src="images/addons/mats.jpg" alt="تكييس دعاسات أمامية" class="addon-image" loading="lazy">
-                        </div>
-                        <div class="addon-row">
-                            <h4 class="addon-title">تكييس دعاسات أمامية</h4>
-                            <span class="addon-price">+5 ريال</span>
-                        </div>
-                        <button type="button" class="addon-add-btn" onclick="addAddonToCart('addon-mats', 'تكييس دعاسات أمامية', 5)">أضف للسلة 🛒</button>
+                <div class="team-card fade-in-up">
+                    <div class="team-image-wrapper">
+                        <img src="images/team.jpg" alt="فريق UNLIMITED SHINE المتنقل" class="team-image" loading="lazy" onerror="this.closest('.team-section').style.display='none'">
                     </div>
-                    <div class="addon-card fade-in-up">
-                        <div class="addon-image-wrapper">
-                            <img src="images/addons/steering.jpg" alt="تكييس عصا القير والمساحات والدركسون" class="addon-image" loading="lazy">
-                        </div>
-                        <div class="addon-row">
-                            <h4 class="addon-title">تكييس عصا القير والمساحات والدركسون</h4>
-                            <span class="addon-price">+5 ريال</span>
-                        </div>
-                        <button type="button" class="addon-add-btn" onclick="addAddonToCart('addon-steering', 'تكييس عصا القير والمساحات والدركسون', 5)">أضف للسلة 🛒</button>
-                    </div>
-                    <div class="addon-card fade-in-up">
-                        <div class="addon-image-wrapper">
-                            <img src="images/addons/dirty-car.jpg" alt="سيارة متسخة بشكل زائد" class="addon-image" loading="lazy">
-                        </div>
-                        <div class="addon-row">
-                            <h4 class="addon-title">سيارة متسخة بشكل زائد</h4>
-                            <span class="addon-price">+5 ريال</span>
-                        </div>
-                        <button type="button" class="addon-add-btn" onclick="addAddonToCart('addon-dirty', 'سيارة متسخة بشكل زائد', 5)">أضف للسلة 🛒</button>
+                    <div class="team-points">
+                        <span class="team-point">✓ نصلك في موقعك داخل أحياء التغطية</span>
+                        <span class="team-point">✓ مواد ألمانية وواكس مرتين</span>
+                        <span class="team-point">✓ دفع مسبق لتأكيد جدية الموعد</span>
                     </div>
                 </div>
             </div>
@@ -426,7 +416,7 @@
         <div class="container">
             <div class="footer-brand-block">
                 <div class="footer-logo-wrapper">
-                    <img src="images/logo.png" alt="UNLIMITED SHINE" class="footer-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="images/logo-4.png" alt="UNLIMITED SHINE" class="footer-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="logo-text-fallback" style="display: none;">UNLIMITED SHINE</div>
                 </div>
                 <p class="footer-desc">غسيل سيارات متنقل يوفر وقتك وجهدك</p>
@@ -591,6 +581,6 @@
         <div class="lightbox-content"><img src="" alt="" id="lightbox-img"></div>
     </div>
 
-    <script src="script.js?v=20"></script>
+    <script src="script.js?v=21"></script>
 </body>
 </html>
